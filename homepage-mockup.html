@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrialAssure — The clinical trial transparency platform</title>
+<meta name="description" content="One platform for the entire clinical trial transparency lifecycle: disclosure, anonymization, and medical writing. AI-accelerated, human-verified. Trusted by 8 of the top 10 clinical development companies." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     TrialAssure — design system
+     Thesis: the act of transparency IS redaction → revelation.
+     The page is built around a live redaction engine.
+     ============================================================ */
+
+  :root{
+    --ink:#0A1C30;          /* deep navy ink, text, redaction bars */
+    --ink-2:#0B2138;        /* deep section base */
+    --ink-3:#0F3061;        /* deep section gradient end */
+    --blue:#1F5BEC;         /* electric primary */
+    --blue-press:#1846C2;
+    --cyan:#22BEE8;         /* bright accent cyan */
+    --cyan-soft:#7FD9F0;
+    --volt:#C7E70C;         /* volt accent — used sparingly */
+    --volt-deep:#A6C400;
+    --paper:#F4F7FC;        /* page background, cool near-white */
+    --surface:#FFFFFF;
+    --mist:#EAF1FB;         /* light blue surface */
+    --mist-2:#DDE8F7;
+    --line:#E2EAF4;         /* hairline */
+    --line-2:#CFDBEC;
+    --slate:#52657E;        /* secondary text */
+    --slate-2:#7E8FA6;      /* tertiary text */
+    --on-dark:#E9F1FB;
+    --on-dark-soft:#9DB4D2;
+    --on-dark-line:rgba(255,255,255,.12);
+
+    --font-display:'Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+
+    --maxw:1200px;
+    --radius:18px;
+    --radius-sm:11px;
+    --shadow-sm:0 1px 2px rgba(10,28,48,.05),0 4px 14px rgba(10,28,48,.05);
+    --shadow:0 18px 50px -22px rgba(10,28,48,.30),0 6px 20px -10px rgba(10,28,48,.14);
+    --shadow-lg:0 40px 90px -40px rgba(10,28,48,.45);
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    font-feature-settings:"cv11","ss01";
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--volt);color:var(--ink)}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;width:100%}
+
+  /* ---------- type ---------- */
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:500;color:var(--blue);
+    display:inline-flex;align-items:center;gap:.55em;
+  }
+  .eyebrow::before{content:"";width:18px;height:1px;background:var(--blue);opacity:.55}
+  .eyebrow.on-dark{color:var(--cyan)}
+  .eyebrow.on-dark::before{background:var(--cyan)}
+
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.04;letter-spacing:-.02em}
+  .h1{font-size:clamp(2.5rem,5.6vw,4.45rem);font-weight:600}
+  .h2{font-size:clamp(2rem,3.8vw,3.15rem)}
+  .h3{font-size:clamp(1.25rem,2vw,1.6rem);letter-spacing:-.015em}
+  .lead{font-size:clamp(1.06rem,1.5vw,1.28rem);color:var(--slate);line-height:1.55;font-weight:420}
+  .section-head{max-width:760px}
+  .section-head .h2{margin:.5rem 0 0}
+  .section-head p{margin-top:1.1rem}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55em;
+    font-family:var(--font-body);font-weight:600;font-size:.96rem;
+    padding:.85em 1.4em;border-radius:999px;cursor:pointer;border:1px solid transparent;
+    transition:transform .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease),color .2s;
+    white-space:nowrap;line-height:1;
+  }
+  .btn svg{width:17px;height:17px;transition:transform .3s var(--ease)}
+  .btn:hover svg{transform:translateX(3px)}
+  .btn-volt{background:var(--volt);color:var(--ink);box-shadow:0 8px 26px -10px rgba(166,196,0,.7)}
+  .btn-volt:hover{transform:translateY(-2px);box-shadow:0 14px 34px -12px rgba(166,196,0,.85)}
+  .btn-ink{background:var(--ink);color:#fff}
+  .btn-ink:hover{transform:translateY(-2px);background:#0e2848}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .btn-ghost.on-dark{color:#fff;border-color:rgba(255,255,255,.28)}
+  .btn-ghost.on-dark:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  header.nav{
+    position:sticky;top:0;z-index:80;
+    background:rgba(244,247,252,.72);
+    backdrop-filter:saturate(160%) blur(14px);
+    -webkit-backdrop-filter:saturate(160%) blur(14px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s,background .3s,box-shadow .3s;
+  }
+  header.nav.scrolled{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(10,28,48,.35)}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;height:70px;gap:24px}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a{font-size:.93rem;font-weight:500;color:var(--slate);transition:color .2s;position:relative;padding:6px 0}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--blue);transition:width .25s var(--ease)}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .nav-cta .btn{padding:.66em 1.15em;font-size:.9rem}
+  .nav-login{font-size:.92rem;font-weight:500;color:var(--ink)}
+  .nav-login:hover{color:var(--blue)}
+  .menu-btn{display:none;background:none;border:1px solid var(--line-2);border-radius:10px;width:42px;height:42px;cursor:pointer;align-items:center;justify-content:center}
+  .menu-btn svg{width:20px;height:20px;stroke:var(--ink)}
+
+  /* logo (pixel motif) */
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:1.28rem;letter-spacing:-.02em;color:var(--ink)}
+  .logo .mark{display:grid;grid-template-columns:repeat(4,4px);grid-auto-rows:4px;gap:2px;transform:translateY(1px)}
+  .logo .mark i{border-radius:1px;background:var(--blue)}
+  .logo .mark i.c{background:var(--cyan)}
+  .logo .mark i.v{background:var(--volt-deep)}
+  .logo .mark i.o{opacity:0}
+  .logo b{color:var(--cyan);font-weight:700}
+  .logo.on-dark{color:#fff}.logo.on-dark b{color:var(--cyan)}
+  .ta-logo{height:30px;width:auto;display:block}
+  .ta-logo--dark{filter:brightness(0) invert(1)}
+  .foot-brand .ta-logo{height:32px}
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{position:relative;padding:clamp(48px,7vw,90px) 0 clamp(56px,7vw,96px);overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(34px,4vw,64px);align-items:center}
+  .hero-copy{max-width:600px;position:relative;z-index:2}
+  .hero h1{margin:1.2rem 0 0}
+  .hero h1 .reveal-word{
+    position:relative;display:inline-block;color:var(--blue);
+    padding:0 .08em;border-radius:6px;white-space:nowrap;
+  }
+  .hero h1 .reveal-word .txt{position:relative;z-index:2}
+  .hero h1 .reveal-word .bar{
+    position:absolute;inset:0;background:var(--ink);border-radius:5px;
+    transform-origin:left center;z-index:3;
+  }
+  .hero p.lead{margin-top:1.5rem;max-width:540px}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:2rem}
+  .hero-trust{margin-top:2.2rem;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-size:.82rem;color:var(--slate-2);font-family:var(--font-mono);letter-spacing:.01em}
+  .hero-trust .dot{width:4px;height:4px;border-radius:50%;background:var(--line-2)}
+  .hero-trust b{color:var(--ink);font-weight:600}
+
+  /* ambient pixel field */
+  .hero-pixels{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5}
+  .px{position:absolute;border-radius:2px}
+
+  /* ---------- the redaction engine card (signature) ---------- */
+  .engine{
+    position:relative;z-index:2;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);padding:22px;
+  }
+  .engine::before{
+    content:"";position:absolute;inset:-1px;border-radius:var(--radius);padding:1px;
+    background:linear-gradient(135deg,rgba(34,190,232,.5),rgba(31,91,236,.0) 40%,rgba(199,231,12,.35));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+  }
+  .engine-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .engine-file{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:.74rem;color:var(--slate);font-weight:500}
+  .engine-file svg{width:15px;height:15px;color:var(--blue)}
+  .engine-tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;font-weight:600;transition:all .4s var(--ease)}
+  .engine-tag.clear{background:#FDECEC;color:#C0392B}
+  .engine-tag.safe{background:#E7F8EF;color:#1B8A4E}
+
+  .doc-row{
+    display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;
+    padding:9px 0;border-bottom:1px dashed var(--line);
+  }
+  .doc-row:last-child{border-bottom:none}
+  .doc-label{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--slate-2);font-weight:500}
+  .doc-val{font-size:.9rem;font-weight:500;color:var(--ink);font-family:var(--font-mono);position:relative;min-height:20px;display:flex;align-items:center}
+  .doc-val .v{transition:opacity .3s var(--ease),filter .3s var(--ease)}
+  .doc-bar{display:inline-block;height:15px;background:var(--ink);border-radius:3px;vertical-align:middle;animation:barIn .45s var(--ease)}
+  @keyframes barIn{from{transform:scaleX(.2);opacity:.4}to{transform:scaleX(1);opacity:1}}
+  .doc-val.is-quasi .v{color:var(--blue)}
+  .doc-val.is-safe .v{color:#1B8A4E}
+  .pix{display:inline-flex;gap:1px;vertical-align:middle}
+  .pix i{width:8px;height:14px;border-radius:1px}
+
+  /* meters */
+  .engine-meters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+  .meter{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 13px}
+  .meter .mlabel{display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;color:var(--slate-2);margin-bottom:8px}
+  .meter .mval{font-family:var(--font-display);font-weight:600;font-size:1.05rem;transition:color .4s}
+  .meter-track{height:6px;border-radius:4px;background:var(--mist-2);overflow:hidden;margin-top:8px}
+  .meter-fill{height:100%;border-radius:4px;width:50%;transition:width .7s var(--ease),background .5s}
+
+  /* ============================================================
+     LOGO / TRUST BAR
+     ============================================================ */
+  .trustbar{padding:30px 0 6px}
+  .trustbar p{text-align:center;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-2);margin-bottom:22px}
+  .logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:18px 44px}
+  .logos span{font-family:var(--font-display);font-weight:600;font-size:1.12rem;color:var(--slate);opacity:.72;letter-spacing:-.01em;transition:opacity .25s,color .25s}
+  .logos span:hover{opacity:1;color:var(--ink)}
+  .logos span small{font-family:var(--font-mono);font-weight:400;font-size:.6rem;letter-spacing:.04em;display:block;text-transform:uppercase;opacity:.7}
+
+  /* ============================================================
+     SECTION scaffolding
+     ============================================================ */
+  section.band{padding:clamp(64px,8vw,118px) 0}
+  .band.tight{padding:clamp(48px,6vw,84px) 0}
+  .band.deep{
+    background:radial-gradient(120% 140% at 85% 0%,var(--ink-3) 0%,var(--ink-2) 48%,var(--ink) 100%);
+    color:var(--on-dark);position:relative;overflow:hidden;
+  }
+  .band.deep .h2{color:#fff}
+  .band.deep .lead{color:var(--on-dark-soft)}
+  .deep-pixels{position:absolute;inset:0;opacity:.5;pointer-events:none}
+
+  /* ---------- problem / squeeze ---------- */
+  .squeeze-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,80px);align-items:start;margin-top:8px}
+  .squeeze-stats{display:flex;flex-direction:column;gap:14px}
+  .stat-card{display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 20px;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+  .stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .stat-card .big{font-family:var(--font-display);font-weight:600;font-size:2rem;color:var(--ink);line-height:1;min-width:118px;flex-shrink:0;white-space:nowrap;letter-spacing:-.02em}
+  .stat-card .big em{color:var(--blue);font-style:normal}
+  .stat-card .txt{font-size:.92rem;color:var(--slate);line-height:1.4}
+  .squeeze-copy p+p{margin-top:1.1rem}
+  .wedge{margin-top:1.6rem;padding:18px 20px;border-left:3px solid var(--volt);background:var(--mist);border-radius:0 12px 12px 0;font-family:var(--font-display);font-weight:500;font-size:1.18rem;color:var(--ink);letter-spacing:-.01em}
+
+  /* regulatory pills */
+  .reg-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.6rem}
+  .reg-pill{font-family:var(--font-mono);font-size:.74rem;font-weight:500;color:var(--slate);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:7px 11px}
+
+  /* ============================================================
+     PLATFORM SHOWCASE
+     ============================================================ */
+  /* ---- pipeline: one record, four stages ---- */
+  .pipeline{position:relative;margin-top:48px}
+  .pipe-track{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .pipe-line{position:absolute;left:6%;right:6%;top:25px;height:2px;background:rgba(255,255,255,.13);z-index:0}
+  .pipe-fill{position:absolute;left:0;top:25px;height:2px;width:0;background:var(--cyan);z-index:1;transition:width .55s var(--ease);box-shadow:0 0 10px rgba(34,190,232,.7)}
+  .pipe-node{position:relative;z-index:2;text-align:left;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid var(--on-dark-line);border-radius:14px;padding:18px 16px 14px;transition:transform .3s var(--ease),background .3s,border-color .3s,box-shadow .3s}
+  .pipe-node:hover{background:rgba(255,255,255,.07);border-color:rgba(127,217,240,.45);transform:translateY(-2px)}
+  .pipe-node.active{background:rgba(34,190,232,.12);border-color:var(--cyan);box-shadow:0 12px 32px -16px rgba(34,190,232,.75)}
+  .pipe-dot{display:block;width:14px;height:14px;border-radius:50%;background:var(--ink-2);border:2px solid rgba(255,255,255,.28);margin-bottom:14px;transition:all .3s var(--ease)}
+  .pipe-node.active .pipe-dot{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 0 5px rgba(34,190,232,.2)}
+  .pipe-node .pnum{display:block;font-family:var(--font-mono);font-size:.62rem;color:var(--on-dark-soft);letter-spacing:.08em}
+  .pipe-node .pname{display:block;font-family:var(--font-display);font-weight:600;font-size:1.04rem;color:#fff;margin:4px 0 2px}
+  .pipe-node .pverb{display:block;font-size:.78rem;color:var(--on-dark-soft)}
+  .pipe-connector{position:absolute;top:100%;left:0;width:0;height:24px;transition:left .55s var(--ease);z-index:3;pointer-events:none}
+  .pipe-connector::before{content:"";position:absolute;left:-1px;top:0;width:2px;height:16px;background:var(--cyan);opacity:.55}
+  .pipe-connector::after{content:"";position:absolute;left:-5px;top:14px;width:0;height:0;border:5px solid transparent;border-top-color:var(--cyan);opacity:.9}
+
+  .record-panel{margin-top:26px;background:rgba(255,255,255,.04);border:1px solid var(--cyan);border-radius:18px;padding:clamp(24px,3vw,40px);display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(28px,4vw,52px);align-items:center;min-height:320px;box-shadow:0 24px 60px -34px rgba(34,190,232,.5)}
+  .sd-tag{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);font-weight:600}
+  .sd-name{font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3vw,2.4rem);color:#fff;margin:8px 0 12px;letter-spacing:-.02em}
+  .sd-name sup{font-size:.4em;color:var(--cyan);top:-1em}
+  .sd-desc{color:var(--on-dark);font-size:1.04rem;line-height:1.55;margin-bottom:20px}
+  .sd-feats{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .sd-feats li{display:flex;gap:11px;align-items:flex-start;font-size:.94rem;color:var(--on-dark-soft)}
+  .sd-feats li svg{width:18px;height:18px;color:var(--cyan);flex-shrink:0;margin-top:1px}
+  .sd-feats li b{color:#fff;font-weight:600}
+  .sd-visual{position:relative;min-height:260px;display:flex;align-items:center;justify-content:center}
+  .fade-swap{animation:fadeSwap .45s var(--ease)}
+  @keyframes fadeSwap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---- record visuals (shared card DNA across the four tools) ---- */
+  .rcard{width:100%;max-width:344px;background:rgba(7,20,34,.55);border:1px solid var(--on-dark-line);border-radius:14px;overflow:hidden;font-family:var(--font-mono);font-size:.76rem}
+  .rcard-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+  .rid{display:flex;align-items:center;gap:7px;color:var(--on-dark);font-weight:500}
+  .rid svg{width:13px;height:13px;color:var(--cyan)}
+  .rstate{font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:5px;font-weight:600}
+  .rstate.cyan{background:rgba(34,190,232,.16);color:var(--cyan)}
+  .rcard-body{padding:4px 14px 14px}
+  .rrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);color:var(--on-dark-soft)}
+  .rrow:last-child{border-bottom:none}
+  .rok{color:#5FD08C;display:inline-flex;align-items:center;gap:5px}
+  .rok svg{width:12px;height:12px}
+  .rpend{color:#E0A93C;display:inline-flex;align-items:center;gap:4px}
+  .rbar{display:inline-block;height:12px;width:72px;background:var(--ink);border-radius:2px}
+  .rval{color:var(--on-dark)}
+  .rtag{display:inline-block;margin-top:12px;font-size:.64rem;color:var(--cyan);background:rgba(34,190,232,.1);border:1px solid rgba(34,190,232,.28);border-radius:6px;padding:5px 9px}
+  .rlangs{display:flex;gap:6px;margin-top:10px}
+  .rlang{font-size:.62rem;padding:4px 9px;border-radius:6px;background:rgba(95,208,140,.14);color:#5FD08C;display:inline-flex;align-items:center;gap:4px}
+  .rlang svg{width:11px;height:11px}
+  .rmeter{margin-top:12px}
+  .rm-label{display:flex;justify-content:space-between;font-size:.62rem;color:var(--on-dark-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .rm-track{height:5px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+  .rm-fill{height:100%;border-radius:3px}
+  .rdash{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+  .rd{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:9px 6px;text-align:center}
+  .rd b{display:block;font-family:var(--font-display);font-size:1.35rem;color:#fff;line-height:1}
+  .rd.amber b{color:#E0A93C}
+  .rd span{font-size:.54rem;color:var(--on-dark-soft);text-transform:uppercase;letter-spacing:.03em}
+
+  /* ---- suite strip (hero-adjacent) ---- */
+  .suitebar{padding:34px 0 6px}
+  .suite-row{display:flex;align-items:stretch;justify-content:center;gap:8px;flex-wrap:wrap}
+  .suite-item{flex:1 1 180px;max-width:228px;display:flex;flex-direction:column;gap:2px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s}
+  .suite-item:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--line-2)}
+  .si-num{font-family:var(--font-mono);font-size:.6rem;color:var(--blue);letter-spacing:.1em}
+  .si-name{font-family:var(--font-display);font-weight:600;font-size:1.16rem;color:var(--ink);letter-spacing:-.01em}
+  .si-verb{font-size:.82rem;color:var(--slate)}
+  .suite-arrow{display:flex;align-items:center;color:var(--line-2);font-size:1.1rem;font-weight:700}
+  .suite-cap{text-align:center;margin-top:18px;font-size:.92rem;color:var(--slate)}
+  .suite-cap b{color:var(--ink);font-weight:600}
+
+  /* ---- credibility band (proof) ---- */
+  .cred{margin-top:36px;display:grid;grid-template-columns:1.05fr 1.35fr;gap:24px;align-items:center}
+  .cred-feature{padding:22px 24px;background:rgba(255,255,255,.04);border:1px solid var(--on-dark-line);border-left:3px solid var(--cyan);border-radius:0 14px 14px 0}
+  .cred-eyebrow{font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--cyan);font-weight:600}
+  .cred-quote{margin-top:10px;font-family:var(--font-display);font-weight:400;font-size:1.12rem;line-height:1.42;color:#fff;letter-spacing:-.01em}
+  .cred-quote b{color:var(--cyan);font-weight:600}
+  .cred-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cred-chip{background:rgba(255,255,255,.04);border:1px solid var(--on-dark-line);border-radius:12px;padding:16px 14px;text-align:center}
+  .cc-top{display:block;font-family:var(--font-mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--on-dark-soft)}
+  .cc-main{display:block;font-family:var(--font-display);font-weight:600;font-size:1.0rem;color:#fff;margin:6px 0 4px;line-height:1.12}
+  .cc-sub{display:block;font-size:.72rem;color:var(--on-dark-soft);line-height:1.3}
+
+  /* ---- hero lead emphasis ---- */
+  .hero .lead em{font-style:normal;font-weight:600;color:var(--blue)}
+
+  /* ============================================================
+     LIVE DEMO
+     ============================================================ */
+  .demo-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(34px,4vw,64px);align-items:center;margin-top:18px}
+  .demo-modes{display:inline-flex;background:var(--mist);border:1px solid var(--line);border-radius:12px;padding:5px;gap:4px;margin:22px 0 4px;flex-wrap:wrap}
+  .mode-btn{font-family:var(--font-mono);font-size:.8rem;font-weight:500;color:var(--slate);background:transparent;border:none;border-radius:8px;padding:9px 15px;cursor:pointer;transition:all .25s var(--ease)}
+  .mode-btn:hover{color:var(--ink)}
+  .mode-btn.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm);font-weight:600}
+  .mode-btn.active[data-mode="clear"]{color:#C0392B}
+  .demo-note{font-size:.92rem;color:var(--slate);margin-top:16px;max-width:440px}
+  .demo-note b{color:var(--ink);font-weight:600}
+  .demo-explain{margin-top:14px;font-family:var(--font-mono);font-size:.78rem;color:var(--blue);min-height:20px;transition:opacity .3s;display:flex;align-items:center;gap:8px}
+  .demo-explain svg{width:15px;height:15px;flex-shrink:0}
+
+  /* ============================================================
+     PROOF / NUMBERS
+     ============================================================ */
+  .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--on-dark-line);border:1px solid var(--on-dark-line);border-radius:18px;overflow:hidden;margin-top:8px}
+  .proof-cell{background:rgba(11,33,56,.6);padding:clamp(26px,3vw,40px) 26px;text-align:center}
+  .proof-cell .pnum{font-family:var(--font-display);font-weight:600;font-size:clamp(2.4rem,4vw,3.4rem);color:#fff;line-height:1;letter-spacing:-.03em}
+  .proof-cell .pnum span{color:var(--cyan)}
+  .proof-cell .plabel{margin-top:12px;color:var(--on-dark-soft);font-size:.9rem;line-height:1.4}
+  .testimonial{margin-top:34px;text-align:center;max-width:760px;margin-left:auto;margin-right:auto}
+  .testimonial blockquote{font-family:var(--font-display);font-weight:400;font-size:clamp(1.3rem,2.4vw,1.85rem);color:#fff;line-height:1.35;letter-spacing:-.015em}
+  .testimonial blockquote .q{color:var(--cyan)}
+  .testimonial cite{display:block;margin-top:18px;font-family:var(--font-mono);font-size:.8rem;color:var(--on-dark-soft);font-style:normal;letter-spacing:.04em}
+
+  /* ============================================================
+     HUMAN IN THE LOOP
+     ============================================================ */
+  .hil-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,60px);align-items:center}
+  .hil-flow{display:flex;flex-direction:column;gap:0}
+  .flow-step{display:flex;gap:18px;align-items:flex-start;position:relative;padding-bottom:26px}
+  .flow-step:last-child{padding-bottom:0}
+  .flow-step .fdot{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2}
+  .flow-step .fdot.ai{background:var(--mist);border:1px solid var(--line-2)}
+  .flow-step .fdot.human{background:var(--ink);}
+  .flow-step .fdot svg{width:22px;height:22px}
+  .flow-step .fdot.ai svg{color:var(--blue)}
+  .flow-step .fdot.human svg{color:var(--volt)}
+  .flow-step:not(:last-child)::before{content:"";position:absolute;left:23px;top:46px;bottom:6px;width:2px;background:linear-gradient(var(--line-2),var(--line))}
+  .flow-step .fbody h4{font-family:var(--font-display);font-weight:600;font-size:1.12rem;margin-bottom:4px;letter-spacing:-.01em}
+  .flow-step .fbody p{font-size:.94rem;color:var(--slate)}
+  .flow-step .fbody .ftag{font-family:var(--font-mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;font-weight:600;padding:2px 8px;border-radius:5px;display:inline-block;margin-bottom:6px}
+  .ftag.t-ai{background:var(--mist);color:var(--blue)}
+  .ftag.t-human{background:#FBF6D9;color:var(--volt-deep)}
+
+  /* ============================================================
+     AUDIENCE PATHS
+     ============================================================ */
+  .paths{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
+  .path-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 28px;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s;
+    display:flex;flex-direction:column;
+  }
+  .path-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--line-2)}
+  .path-ico{width:48px;height:48px;border-radius:13px;background:var(--mist);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .path-ico svg{width:24px;height:24px;color:var(--blue)}
+  .path-card h3{font-size:1.32rem;margin-bottom:8px}
+  .path-card p{font-size:.95rem;color:var(--slate);flex:1;margin-bottom:18px}
+  .path-link{font-family:var(--font-body);font-weight:600;font-size:.92rem;color:var(--blue);display:inline-flex;align-items:center;gap:6px;transition:gap .25s var(--ease)}
+  .path-link:hover{gap:11px}
+  .path-link svg{width:15px;height:15px}
+
+  /* ============================================================
+     FINAL CTA
+     ============================================================ */
+  .finalcta{text-align:center;position:relative;z-index:2}
+  .finalcta .h2{margin:0 auto;max-width:760px}
+  .finalcta .lead{margin:1.3rem auto 0;max-width:520px}
+  .finalcta .hero-cta{justify-content:center;margin-top:2.2rem}
+  .finalcta .sub{margin-top:1.4rem;font-family:var(--font-mono);font-size:.78rem;color:var(--on-dark-soft);letter-spacing:.03em}
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer.site{background:var(--ink);color:var(--on-dark-soft);padding:62px 0 30px}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding-bottom:42px;border-bottom:1px solid var(--on-dark-line)}
+  .foot-brand .logo{margin-bottom:16px}
+  .foot-brand p{font-size:.88rem;max-width:300px;line-height:1.6}
+  .foot-tag{font-family:var(--font-display);font-weight:500;color:var(--cyan);font-size:.95rem;margin-top:16px}
+  .foot-col h5{font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--on-dark-soft);margin-bottom:16px;font-weight:500}
+  .foot-col a{display:block;font-size:.9rem;color:var(--on-dark);padding:5px 0;transition:color .2s}
+  .foot-col a:hover{color:var(--cyan)}
+  .foot-offices{display:flex;gap:40px;flex-wrap:wrap;margin:30px 0;font-size:.84rem;line-height:1.6}
+  .foot-offices b{color:var(--on-dark);font-family:var(--font-display);font-weight:500;display:block;margin-bottom:3px}
+  .foot-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--slate-2)}
+  .foot-bottom a:hover{color:var(--cyan)}
+
+  /* ============================================================
+     REVEAL animation
+     ============================================================ */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal[data-d="1"]{transition-delay:.08s}
+  .reveal[data-d="2"]{transition-delay:.16s}
+  .reveal[data-d="3"]{transition-delay:.24s}
+  .reveal[data-d="4"]{transition-delay:.32s}
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:42px}
+    .hero-copy{max-width:none}
+    .engine{max-width:520px;margin:0 auto}
+    .squeeze-grid,.demo-grid,.hil-grid{grid-template-columns:1fr;gap:36px}
+    .record-panel{grid-template-columns:1fr;gap:28px}
+    .pipe-track{grid-template-columns:repeat(2,1fr);gap:10px}
+    .pipe-line,.pipe-fill,.pipe-connector{display:none}
+    .cred{grid-template-columns:1fr;gap:18px}
+    .sd-visual{order:-1}
+    .proof-grid{grid-template-columns:1fr 1fr}
+    .paths{grid-template-columns:1fr}
+    .foot-top{grid-template-columns:1fr 1fr;gap:34px}
+    .foot-brand{grid-column:1/-1}
+  }
+  @media (max-width:680px){
+    .nav-links,.nav-login{display:none}
+    .menu-btn{display:flex}
+    .nav-cta .btn-volt{display:none}
+    .wrap{padding:0 20px}
+    .proof-grid{grid-template-columns:1fr}
+    .foot-top{grid-template-columns:1fr 1fr}
+    .stat-card{flex-direction:column;align-items:flex-start;gap:8px}
+    .stat-card .big{min-width:0}
+    .doc-row{grid-template-columns:96px 1fr}
+    .suite-arrow{display:none}
+    .suite-item{flex:1 1 44%}
+    .cred-chips{grid-template-columns:1fr}
+    .mobile-menu.open{display:block}
+  }
+  .mobile-menu{display:none;border-top:1px solid var(--line);background:var(--paper);padding:14px 20px 20px}
+  .mobile-menu a{display:block;padding:11px 0;font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
+  .mobile-menu a:last-child{border-bottom:none}
+  .mobile-menu .btn{margin-top:14px;width:100%;justify-content:center}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-row">
+    <a class="logo" href="#top" aria-label="TrialAssure home"><svg class="ta-logo" viewBox="0 0 297.534 92.285" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TrialAssure logo"><path d="m352.563 103.3c-4.263 0-6.511.227-6.511-4.545h8.306c5.386 0 8.529-2.021 8.529-7.743 0-9.874-3.814-10.94-13.02-10.94-9.535 0-13.014 2.354-13.014 14.981 0 10.663 2.243 15.319 9.766 15.319 4.712 0 11.669.111 15.71-1.574v-6.114a47.064 47.064 0 0 1 -9.764.615m-2.135-16.553c2.976 0 3.259.786 3.259 3.759a1.878 1.878 0 0 1 -2.079 2.021h-5.556c-.112-5.443 1.013-5.78 4.376-5.78" fill="#3dbee3" transform="translate(-77.053 -18.317)"/><path d="m308.621 110.076h9.2v-17.676c1.121-3.03 3.478-3.313 6.286-3.313 1.737 0 3.532 0 4.375.058v-8.806a8.341 8.341 0 0 0 -3.03-.338 9.933 9.933 0 0 0 -7.632 4.041l-1.234-3.758h-7.969z" fill="#3dbee3" transform="translate(-70.595 -18.3)"/><path d="m268.027 99.838c0 5.949 1.459 10.83 8.752 10.83 4.544 0 6.115-1.853 8.865-3.537l1.684 3.029h7.523v-29.793h-9.206v20.817a6.969 6.969 0 0 1 -5.777 2.357c-1.627 0-2.639-.786-2.639-3.48v-19.694h-9.2z" fill="#3dbee3" transform="translate(-61.31 -18.384)"/><path d="m230.413 90.83c0 5.778 3.367 8.247 8.64 8.247h6.228c1.292 0 1.512.507 1.512 1.519v.895c0 1.293-.782 1.463-1.512 1.463h-13.632v5.554c2.075 1.8 10.38 1.851 17.058 1.851 3.591 0 7.293-1.907 7.293-8.026v-3.141c0-4.379-2.133-7.912-8.083-7.912h-6.45c-1.01 0-1.854 0-1.854-1.462v-.9c0-1.232.393-1.571 1.854-1.571h13.073v-5.608c-2.074-1.739-9.593-1.739-16.381-1.739-5.728 0-7.746 3.649-7.746 8.249z" fill="#3dbee3" transform="translate(-52.706 -18.3)"/><path d="m194.11 90.83c0 5.778 3.365 8.247 8.639 8.247h6.228c1.291 0 1.516.507 1.516 1.519v.895c0 1.293-.783 1.463-1.516 1.463h-13.633v5.554c2.078 1.8 10.381 1.851 17.058 1.851 3.591 0 7.294-1.907 7.294-8.026v-3.141c0-4.379-2.135-7.912-8.079-7.912h-6.455c-1.01 0-1.851 0-1.851-1.462v-.9c0-1.232.392-1.571 1.851-1.571h13.077v-5.608c-2.075-1.739-9.598-1.739-16.389-1.739-5.72 0-7.74 3.649-7.74 8.249z" fill="#3dbee3" transform="translate(-44.402 -18.3)"/><path d="m168.27 65.739h-10.66l-13.41 41.074h9.65l2.692-8.245h12.406l2.69 8.245h9.6zm-9.48 24.861 4.261-13.074 3.871 13.074z" fill="#3dbee3" transform="translate(-32.985 -15.037)"/><g fill="#004cac"><path d="m121.79 95.362c0 7.913 2.806 10.6 7.856 10.6h7.072v-5.5a28.207 28.207 0 0 1 -3.37-1.179c-1.344-.615-2.357-1.512-2.357-5.61v-31.642h-9.2z" transform="translate(-27.859 -14.189)"/><path d="m97.266 79.638c-5.554 0-9.315.45-13.244 2.075v5.556c1.347-.113 9.765-.619 11.84-.619 2.41 0 3.761.227 3.761 3.312a9.56 9.56 0 0 1 0 1.236c0 .053-7.407 0-7.407 0-7.013 0-9.206 4.153-9.206 8.414v2.582c0 3.537 2.472 7.91 8.814 8.138 4.317.111 7.4-2.638 7.8-3.478l1.908 3.139h7.293v-20.425c0-7.855-4.489-9.93-11.558-9.93m2.357 21.489a6.985 6.985 0 0 1 -4.769 2.135c-1.293 0-2.638-.059-2.638-2.47v-.956c0-1.121.168-2.637 2.13-2.8l5.277-.45z" transform="translate(-18.988 -18.217)"/><path d="m66.28 72.723a1.252 1.252 0 0 0 1.347 1.289h6.957a1.179 1.179 0 0 0 1.289-1.289v-5.669a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.347.562-1.347 1.46z" transform="translate(-15.161 -15.004)"/><path d="m51.286 61.983h9.203v29.793h-9.203z"/><path d="m36.6 110.076h9.2v-17.676c1.121-3.03 3.479-3.313 6.286-3.313 1.738 0 3.535 0 4.376.058v-8.806a8.35 8.35 0 0 0 -3.034-.339 9.929 9.929 0 0 0 -7.628 4.042l-1.236-3.758h-7.964z" transform="translate(-8.372 -18.3)"/><path d="m0 74.1h10.771v32.713h9.206v-32.713h11.051v-8.36h-31.028z" transform="translate(0 -15.038)"/><path d="m81.02 59.342a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.459h-6.957c-.9 0-1.348.561-1.348 1.459z" transform="translate(-18.533 -11.944)"/><path d="m66.289 46.459a1.252 1.252 0 0 0 1.347 1.29h6.958a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.958c-.9 0-1.347.562-1.347 1.46z" transform="translate(-15.163 -8.997)"/><path d="m80.939 33.537a1.252 1.252 0 0 0 1.348 1.29h6.957a1.179 1.179 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.957c-.9 0-1.348.562-1.348 1.459z" transform="translate(-18.514 -6.041)"/><path d="m95.678 46.459a1.252 1.252 0 0 0 1.348 1.29h6.958a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.285 1.285 0 0 0 -1.288-1.46h-6.958c-.9 0-1.348.562-1.348 1.46z" transform="translate(-21.886 -8.997)"/></g><path d="m110.508 33.595a1.253 1.253 0 0 0 1.349 1.29h6.957a1.179 1.179 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.349.562-1.349 1.46z" fill="#d0d600" transform="translate(-25.278 -6.054)"/><path d="m125.129 46.459a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.348.562-1.348 1.46z" fill="#d0d600" transform="translate(-28.623 -8.997)"/><path d="m139.839 33.595a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.286 1.286 0 0 0 -1.289-1.46h-6.959c-.9 0-1.347.562-1.347 1.46z" fill="#d0d600" transform="translate(-31.987 -6.054)"/><path d="m125.129 20.092a1.252 1.252 0 0 0 1.348 1.289h6.957a1.18 1.18 0 0 0 1.289-1.289v-5.669a1.285 1.285 0 0 0 -1.289-1.459h-6.957c-.9 0-1.348.561-1.348 1.459z" fill="#004cac" transform="translate(-28.623 -2.965)"/><path d="m139.839 7.229a1.253 1.253 0 0 0 1.347 1.29h6.959a1.181 1.181 0 0 0 1.289-1.29v-5.669a1.285 1.285 0 0 0 -1.289-1.46h-6.959c-.9 0-1.347.562-1.347 1.459z" fill="#004cac" transform="translate(-31.987 -.023)"/><path d="m154.594 20.171a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.289-1.29v-5.671a1.285 1.285 0 0 0 -1.289-1.459h-6.958c-.9 0-1.347.561-1.347 1.459z" fill="#d0d600" transform="translate(-35.363 -2.984)"/><path d="m184.087 20.092a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.29-1.29v-5.668a1.285 1.285 0 0 0 -1.29-1.459h-6.957a1.274 1.274 0 0 0 -1.348 1.459z" fill="#3dbee3" transform="translate(-42.109 -2.966)"/><path d="m198.8 7.168a1.253 1.253 0 0 0 1.349 1.29h6.951a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.284 1.284 0 0 0 -1.288-1.46h-6.957c-.9 0-1.349.562-1.349 1.46z" fill="#3dbee3" transform="translate(-45.474 -.009)"/><path d="m213.613 20.11a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.959c-.9 0-1.347.562-1.347 1.459z" fill="#84d2e5" transform="translate(-48.863 -2.97)"/><path d="m169.38 33.609a1.252 1.252 0 0 0 1.348 1.29h6.958a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.285 1.285 0 0 0 -1.288-1.46h-6.958c-.9 0-1.348.562-1.348 1.46z" fill="#3dbee3" transform="translate(-38.745 -6.057)"/><path d="m169.423 7.128a1.252 1.252 0 0 0 1.348 1.29h6.958a1.18 1.18 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.958c-.9 0-1.348.562-1.348 1.459z" fill="#d0d600" transform="translate(-38.755)"/><path d="m228.375 33.523a1.252 1.252 0 0 0 1.349 1.289h6.958a1.179 1.179 0 0 0 1.288-1.289v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.958a1.274 1.274 0 0 0 -1.349 1.459z" fill="#84d2e5" transform="translate(-52.24 -6.038)"/><path d="m383 84.92a4.68 4.68 0 1 1 -4.665-4.553 4.576 4.576 0 0 1 4.665 4.553m-8.19 0a3.528 3.528 0 0 0 3.554 3.637 3.487 3.487 0 0 0 3.471-3.609 3.515 3.515 0 1 0 -7.025-.028m2.8 2.388h-1.055v-4.554a9.233 9.233 0 0 1 1.749-.138 2.842 2.842 0 0 1 1.583.332 1.265 1.265 0 0 1 .443 1 1.166 1.166 0 0 1 -.93 1.052v.056a1.343 1.343 0 0 1 .833 1.111 3.5 3.5 0 0 0 .332 1.138h-1.138a3.9 3.9 0 0 1 -.361-1.111c-.083-.5-.361-.722-.944-.722h-.5zm.028-2.582h.5c.583 0 1.056-.194 1.056-.666 0-.416-.305-.694-.972-.694a2.472 2.472 0 0 0 -.583.056z" fill="#3dbee3" transform="translate(-85.47 -18.384)"/></svg></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#platform">Platform</a>
+      <a href="#demo">Live demo</a>
+      <a href="#why">Why TrialAssure</a>
+      <a href="#who">Who it's for</a>
+      <a href="#proof">Proof</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="nav-login" href="#">Sign in</a>
+      <a class="btn btn-volt" href="#contact">Get a demo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#platform">Platform</a>
+    <a href="#demo">Live demo</a>
+    <a href="#why">Why TrialAssure</a>
+    <a href="#who">Who it's for</a>
+    <a href="#proof">Proof</a>
+    <a class="btn btn-volt" href="#contact">Get a demo</a>
+  </div>
+</header>
+
+<span id="top"></span>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-pixels" id="heroPixels" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">The complete transparency suite</span>
+      <h1 class="h1">
+        Make clinical<br>
+        trial data <span class="reveal-word" id="revealWord"><span class="txt">public-ready</span><span class="bar" id="revealBar"></span></span><br>
+        in minutes, not months.
+      </h1>
+      <p class="lead">
+        Most vendors solve one piece. TrialAssure is the only platform that runs the
+        <em>whole</em> transparency lifecycle — register, anonymize, write, and track — with AI
+        doing the heavy lifting and specialists who know the regulations verifying every output.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-volt" href="#contact">Get a demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#platform">See the platform</a>
+      </div>
+      <div class="hero-trust">
+        <span>Trusted by <b>8 of the top 10</b> clinical development companies</span>
+        <span class="dot"></span>
+        <span>Founded <b>2009</b></span>
+        <span class="dot"></span>
+        <span>ISO 27001 &amp; 9001</span>
+      </div>
+    </div>
+
+    <!-- the redaction engine: signature element -->
+    <div class="engine" id="heroEngine" aria-label="Live redaction preview">
+      <div class="engine-head">
+        <div class="engine-file">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><path d="M9 13h6M9 17h6"/></svg>
+          clinical-study-report.pdf
+        </div>
+        <span class="engine-tag clear" id="heroTag">Identifiable</span>
+      </div>
+      <div id="heroDoc"></div>
+      <div class="engine-meters">
+        <div class="meter">
+          <div class="mlabel"><span>Re-identification risk</span></div>
+          <div class="mval" id="heroRiskVal">—</div>
+          <div class="meter-track"><div class="meter-fill" id="heroRiskFill"></div></div>
+        </div>
+        <div class="meter">
+          <div class="mlabel"><span>Data utility retained</span></div>
+          <div class="mval" id="heroUtilVal">—</div>
+          <div class="meter-track"><div class="meter-fill" id="heroUtilFill"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUITE STRIP ============ -->
+<div class="suitebar">
+  <div class="wrap">
+    <div class="suite-row" role="list">
+      <a class="suite-item" href="#platform" role="listitem">
+        <span class="si-num">01</span><span class="si-name">REGISTRY</span><span class="si-verb">Register &amp; disclose</span>
+      </a>
+      <span class="suite-arrow" aria-hidden="true">&rarr;</span>
+      <a class="suite-item" href="#platform" role="listitem">
+        <span class="si-num">02</span><span class="si-name">ANONYMIZE</span><span class="si-verb">Protect &amp; share</span>
+      </a>
+      <span class="suite-arrow" aria-hidden="true">&rarr;</span>
+      <a class="suite-item" href="#platform" role="listitem">
+        <span class="si-num">03</span><span class="si-name">LINK AI</span><span class="si-verb">Draft &amp; write</span>
+      </a>
+      <span class="suite-arrow" aria-hidden="true">&rarr;</span>
+      <a class="suite-item" href="#platform" role="listitem">
+        <span class="si-num">04</span><span class="si-name">BEACON</span><span class="si-verb">Track &amp; prove</span>
+      </a>
+    </div>
+    <p class="suite-cap"><b>Four products, one connected platform</b> — register, anonymize, write, and track, end to end.</p>
+  </div>
+</div>
+
+<!-- ============ FEATURED IN ============ -->
+<div class="trustbar">
+  <div class="wrap">
+    <p>Award-winning technology, featured across the life-science press</p>
+    <div class="logos">
+      <span>BioSpace</span>
+      <span>Applied Clinical Trials</span>
+      <span>Clinical Leader</span>
+      <span>PharmaVoice</span>
+      <span>Bio-IT World</span>
+      <span>DBusiness</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ THE SQUEEZE / POSITIONING ============ -->
+<section class="band" id="why">
+  <div class="wrap">
+    <div class="squeeze-grid">
+      <div class="squeeze-copy reveal">
+        <span class="eyebrow">Why now</span>
+        <h2 class="h2" style="margin-top:.5rem">Transparency stopped being optional.</h2>
+        <p class="lead" style="margin-top:1.1rem">
+          Global health authorities have turned guidance into law. The FDA Final Rule,
+          EMA Policy&nbsp;0070 and the EU&nbsp;CTR, and Health&nbsp;Canada's PRCI all carry hard
+          deadlines and real penalties — and the requirements change constantly.
+        </p>
+        <p>
+          Most teams answer with a patchwork: a registry tool here, an anonymization vendor there,
+          writers buried in Word, and a spreadsheet trying to track it all. The seams are where
+          deadlines get missed.
+        </p>
+        <div class="reg-pills">
+          <span class="reg-pill">FDA Final Rule</span>
+          <span class="reg-pill">EMA Policy 0070</span>
+          <span class="reg-pill">EU CTR / CTIS</span>
+          <span class="reg-pill">Health Canada PRCI</span>
+          <span class="reg-pill">ICH M11</span>
+          <span class="reg-pill">GDPR / HIPAA</span>
+        </div>
+        <div class="wedge">TrialAssure replaces the patchwork with one connected platform.</div>
+      </div>
+      <div class="squeeze-stats reveal" data-d="1">
+        <div class="stat-card">
+          <div class="big">$<em>10K</em></div>
+          <div class="txt">Maximum daily U.S. penalty for clinical trial disclosure non-compliance.</div>
+        </div>
+        <div class="stat-card">
+          <div class="big"><em>40+</em></div>
+          <div class="txt">Global registries with separate rules, formats, and deadlines to satisfy.</div>
+        </div>
+        <div class="stat-card">
+          <div class="big"><em>34%</em></div>
+          <div class="txt">Of academically sponsored trials are out of timing compliance, per AllTrials.</div>
+        </div>
+        <div class="stat-card">
+          <div class="big">weeks<em>→min</em></div>
+          <div class="txt">The drafting and redaction work AI compresses, end to end.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORM SHOWCASE ============ -->
+<section class="band deep" id="platform">
+  <div class="deep-pixels" id="platPixels" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow on-dark">The platform</span>
+      <h2 class="h2">One platform for the whole lifecycle.</h2>
+      <p class="lead">Follow one clinical record from first registration to public results. Click any stage to watch that product go to work on the same record — one connected system, not four disconnected tools.</p>
+    </div>
+
+    <div class="pipeline reveal" data-d="1">
+      <div class="pipe-track" id="pipeTrack" role="tablist" aria-label="Platform products">
+        <div class="pipe-line" aria-hidden="true"></div>
+        <div class="pipe-fill" id="pipeFill" aria-hidden="true"></div>
+        <button class="pipe-node active" data-stage="0" role="tab" aria-selected="true">
+          <span class="pipe-dot" aria-hidden="true"></span>
+          <span class="pnum">STEP 01</span>
+          <span class="pname">REGISTRY</span>
+          <span class="pverb">Register &amp; disclose</span>
+        </button>
+        <button class="pipe-node" data-stage="1" role="tab" aria-selected="false">
+          <span class="pipe-dot" aria-hidden="true"></span>
+          <span class="pnum">STEP 02</span>
+          <span class="pname">ANONYMIZE</span>
+          <span class="pverb">Protect &amp; share</span>
+        </button>
+        <button class="pipe-node" data-stage="2" role="tab" aria-selected="false">
+          <span class="pipe-dot" aria-hidden="true"></span>
+          <span class="pnum">STEP 03</span>
+          <span class="pname">LINK AI</span>
+          <span class="pverb">Draft &amp; write</span>
+        </button>
+        <button class="pipe-node" data-stage="3" role="tab" aria-selected="false">
+          <span class="pipe-dot" aria-hidden="true"></span>
+          <span class="pnum">STEP 04</span>
+          <span class="pname">BEACON</span>
+          <span class="pverb">Track &amp; prove</span>
+        </button>
+      </div>
+      <div class="pipe-connector" id="pipeConnector" aria-hidden="true"></div>
+    </div>
+    <div class="record-panel reveal" data-d="2" id="stageDetail"></div>
+  </div>
+</section>
+
+<!-- ============ LIVE DEMO ============ -->
+<section class="band tight" id="demo">
+  <div class="wrap">
+    <div class="demo-grid">
+      <div class="demo-copy reveal">
+        <span class="eyebrow">See it work</span>
+        <h2 class="h2" style="margin-top:.5rem">Watch a record become shareable.</h2>
+        <p class="lead" style="margin-top:1.1rem">
+          This is a live preview of the engine inside ANONYMIZE. Switch modes and watch the
+          identifiers transform — while the clinical findings stay exactly where they are.
+        </p>
+        <div class="demo-modes" role="group" aria-label="Anonymization mode">
+          <button class="mode-btn active" data-mode="clear">Identifiable</button>
+          <button class="mode-btn" data-mode="anonymize">Anonymize</button>
+          <button class="mode-btn" data-mode="redact">Redact</button>
+          <button class="mode-btn" data-mode="mask">Mask</button>
+        </div>
+        <p class="demo-note">
+          <b>The catch most teams miss:</b> blunt redaction destroys the data researchers need.
+          Risk-based anonymization protects identities <em>and</em> keeps the science usable —
+          which is exactly what regulators now expect.
+        </p>
+        <div class="demo-explain" id="demoExplain" aria-live="polite"></div>
+      </div>
+
+      <div class="engine" id="demoEngine">
+        <div class="engine-head">
+          <div class="engine-file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><path d="M9 13h6M9 17h6"/></svg>
+            subject-listing-0427.xpt
+          </div>
+          <span class="engine-tag clear" id="demoTag">Identifiable</span>
+        </div>
+        <div id="demoDoc"></div>
+        <div class="engine-meters">
+          <div class="meter">
+            <div class="mlabel"><span>Re-identification risk</span></div>
+            <div class="mval" id="demoRiskVal">—</div>
+            <div class="meter-track"><div class="meter-fill" id="demoRiskFill"></div></div>
+          </div>
+          <div class="meter">
+            <div class="mlabel"><span>Data utility retained</span></div>
+            <div class="mval" id="demoUtilVal">—</div>
+            <div class="meter-track"><div class="meter-fill" id="demoUtilFill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROOF ============ -->
+<section class="band deep" id="proof">
+  <div class="deep-pixels" id="proofPixels" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow on-dark">The receipts</span>
+      <h2 class="h2">Fifteen years. Eight million pages. Zero shortcuts.</h2>
+    </div>
+    <div class="proof-grid reveal" data-d="1" id="proofGrid">
+      <div class="proof-cell"><div class="pnum" data-count="8" data-suffix="/10">0/10</div><div class="plabel">of the top clinical development companies use TrialAssure</div></div>
+      <div class="proof-cell"><div class="pnum" data-count="8" data-suffix="M+">0</div><div class="plabel">pages of documents anonymized</div></div>
+      <div class="proof-cell"><div class="pnum" data-count="400" data-suffix="+">0</div><div class="plabel">clinical datasets shared and submitted</div></div>
+      <div class="proof-cell"><div class="pnum" data-count="40" data-suffix="+">0</div><div class="plabel">global registries handled from one portal</div></div>
+      <div class="proof-cell"><div class="pnum" data-count="80" data-suffix="%">0</div><div class="plabel">less manual effort vs. redacting by hand</div></div>
+      <div class="proof-cell"><div class="pnum"><span>2026</span></div><div class="plabel">Data Privacy Solution of the Year &mdash; Data Breakthrough Awards</div></div>
+    </div>
+    <div class="cred reveal" data-d="2">
+      <div class="cred-feature">
+        <span class="cred-eyebrow">Featured customer</span>
+        <p class="cred-quote">Cancer Research UK&rsquo;s Centre for Drug Development uses <b>LINK AI</b> to draft regulatory and clinical trial documents &mdash; with its own medical writers kept central to every review.</p>
+      </div>
+      <div class="cred-chips">
+        <div class="cred-chip"><span class="cc-top">Recognized alongside</span><span class="cc-main">Box &middot; MongoDB &middot; NetApp</span><span class="cc-sub">in the 2026 Data Breakthrough Awards</span></div>
+        <div class="cred-chip"><span class="cc-top">USPTO</span><span class="cc-main">Granted patent</span><span class="cc-sub">date-offset anonymization method</span></div>
+        <div class="cred-chip"><span class="cc-top">Built with</span><span class="cc-main">NVIDIA &middot; Microsoft &middot; OpenAI</span><span class="cc-sub">technology partners &amp; programs</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HUMAN IN THE LOOP ============ -->
+<section class="band">
+  <div class="wrap">
+    <div class="hil-grid">
+      <div class="reveal">
+        <span class="eyebrow">AI Enabled. Human Driven.™</span>
+        <h2 class="h2" style="margin-top:.5rem">AI executes. People stay accountable.</h2>
+        <p class="lead" style="margin-top:1.1rem">
+          In regulatory submissions, accountability can't be automated. Our software drafts and
+          redacts at machine speed — then routes everything to people whose job is knowing the
+          regulations, so nothing reaches an authority without a human signature behind it.
+        </p>
+        <p style="margin-top:1.1rem;color:var(--slate)">
+          Every transformation is logged. Every decision is traceable. Every record is
+          inspection-ready by design.
+        </p>
+      </div>
+      <div class="hil-flow reveal" data-d="1">
+        <div class="flow-step">
+          <div class="fdot ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg></div>
+          <div class="fbody">
+            <span class="ftag t-ai">AI</span>
+            <h4>Draft &amp; detect in seconds</h4>
+            <p>Generative AI produces first drafts and flags every identifier across documents, datasets, and images.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="fdot ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+          <div class="fbody">
+            <span class="ftag t-ai">AI</span>
+            <h4>Quantify the risk</h4>
+            <p>A risk-based engine scores re-identification probability and recommends the lightest touch that meets the rule.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="fdot human"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg></div>
+          <div class="fbody">
+            <span class="ftag t-human">Human</span>
+            <h4>Verify &amp; approve</h4>
+            <p>Tenured transparency specialists review each output against current guidance and sign off — the human in the loop.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUDIENCE PATHS ============ -->
+<section class="band tight" id="who" style="background:var(--mist)">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Who it's for</span>
+      <h2 class="h2">One engine. Different starting points.</h2>
+    </div>
+    <div class="paths">
+      <div class="path-card reveal" data-d="1">
+        <div class="path-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/><path d="M3 12h18"/></svg></div>
+        <h3>Sponsors &amp; biotech</h3>
+        <p>Own your global disclosure, anonymization, and medical writing end to end — and stop renewing four separate vendor contracts.</p>
+        <a class="path-link" href="#contact">Explore for sponsors <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="path-card reveal" data-d="2">
+        <div class="path-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M15.5 20c.2-2.3 1.9-3.6 4-3.6"/></svg></div>
+        <h3>CROs &amp; partners</h3>
+        <p>Deliver transparency services at scale without adding headcount. White-glove tooling, reseller and referral programs, staff augmentation when you need it.</p>
+        <a class="path-link" href="#contact">Explore partnerships <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="path-card reveal" data-d="3">
+        <div class="path-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V10M19 21V10M4 10l8-6 8 6M9 21v-5h6v5"/></svg></div>
+        <h3>Government</h3>
+        <p>The same engine, market-tested in pharma, now cuts FOIA backlogs up to 80%. Automated redaction and risk reporting for sensitive records — powered by Trusano.</p>
+        <a class="path-link" href="#contact">Explore for government <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="band deep" id="contact">
+  <div class="deep-pixels" id="ctaPixels" aria-hidden="true"></div>
+  <div class="wrap finalcta">
+    <div class="reveal">
+      <span class="eyebrow on-dark" style="justify-content:center;display:inline-flex">Ready when you are</span>
+      <h2 class="h2" style="margin-top:.7rem">See the whole lifecycle on one platform.</h2>
+      <p class="lead">A 30-minute walkthrough with a transparency specialist — no patchwork, no slideware, just the engine on your kind of data.</p>
+      <div class="hero-cta">
+        <a class="btn btn-volt" href="#">Get a demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost on-dark" href="#">Download capabilities statement</a>
+      </div>
+      <p class="sub">Trusted by 8 of the top 10 clinical development companies · Canton, MI &amp; Eindhoven, NL</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="logo on-dark" href="#top"><svg class="ta-logo ta-logo--dark" viewBox="0 0 297.534 92.285" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TrialAssure logo"><path d="m352.563 103.3c-4.263 0-6.511.227-6.511-4.545h8.306c5.386 0 8.529-2.021 8.529-7.743 0-9.874-3.814-10.94-13.02-10.94-9.535 0-13.014 2.354-13.014 14.981 0 10.663 2.243 15.319 9.766 15.319 4.712 0 11.669.111 15.71-1.574v-6.114a47.064 47.064 0 0 1 -9.764.615m-2.135-16.553c2.976 0 3.259.786 3.259 3.759a1.878 1.878 0 0 1 -2.079 2.021h-5.556c-.112-5.443 1.013-5.78 4.376-5.78" fill="#3dbee3" transform="translate(-77.053 -18.317)"/><path d="m308.621 110.076h9.2v-17.676c1.121-3.03 3.478-3.313 6.286-3.313 1.737 0 3.532 0 4.375.058v-8.806a8.341 8.341 0 0 0 -3.03-.338 9.933 9.933 0 0 0 -7.632 4.041l-1.234-3.758h-7.969z" fill="#3dbee3" transform="translate(-70.595 -18.3)"/><path d="m268.027 99.838c0 5.949 1.459 10.83 8.752 10.83 4.544 0 6.115-1.853 8.865-3.537l1.684 3.029h7.523v-29.793h-9.206v20.817a6.969 6.969 0 0 1 -5.777 2.357c-1.627 0-2.639-.786-2.639-3.48v-19.694h-9.2z" fill="#3dbee3" transform="translate(-61.31 -18.384)"/><path d="m230.413 90.83c0 5.778 3.367 8.247 8.64 8.247h6.228c1.292 0 1.512.507 1.512 1.519v.895c0 1.293-.782 1.463-1.512 1.463h-13.632v5.554c2.075 1.8 10.38 1.851 17.058 1.851 3.591 0 7.293-1.907 7.293-8.026v-3.141c0-4.379-2.133-7.912-8.083-7.912h-6.45c-1.01 0-1.854 0-1.854-1.462v-.9c0-1.232.393-1.571 1.854-1.571h13.073v-5.608c-2.074-1.739-9.593-1.739-16.381-1.739-5.728 0-7.746 3.649-7.746 8.249z" fill="#3dbee3" transform="translate(-52.706 -18.3)"/><path d="m194.11 90.83c0 5.778 3.365 8.247 8.639 8.247h6.228c1.291 0 1.516.507 1.516 1.519v.895c0 1.293-.783 1.463-1.516 1.463h-13.633v5.554c2.078 1.8 10.381 1.851 17.058 1.851 3.591 0 7.294-1.907 7.294-8.026v-3.141c0-4.379-2.135-7.912-8.079-7.912h-6.455c-1.01 0-1.851 0-1.851-1.462v-.9c0-1.232.392-1.571 1.851-1.571h13.077v-5.608c-2.075-1.739-9.598-1.739-16.389-1.739-5.72 0-7.74 3.649-7.74 8.249z" fill="#3dbee3" transform="translate(-44.402 -18.3)"/><path d="m168.27 65.739h-10.66l-13.41 41.074h9.65l2.692-8.245h12.406l2.69 8.245h9.6zm-9.48 24.861 4.261-13.074 3.871 13.074z" fill="#3dbee3" transform="translate(-32.985 -15.037)"/><g fill="#004cac"><path d="m121.79 95.362c0 7.913 2.806 10.6 7.856 10.6h7.072v-5.5a28.207 28.207 0 0 1 -3.37-1.179c-1.344-.615-2.357-1.512-2.357-5.61v-31.642h-9.2z" transform="translate(-27.859 -14.189)"/><path d="m97.266 79.638c-5.554 0-9.315.45-13.244 2.075v5.556c1.347-.113 9.765-.619 11.84-.619 2.41 0 3.761.227 3.761 3.312a9.56 9.56 0 0 1 0 1.236c0 .053-7.407 0-7.407 0-7.013 0-9.206 4.153-9.206 8.414v2.582c0 3.537 2.472 7.91 8.814 8.138 4.317.111 7.4-2.638 7.8-3.478l1.908 3.139h7.293v-20.425c0-7.855-4.489-9.93-11.558-9.93m2.357 21.489a6.985 6.985 0 0 1 -4.769 2.135c-1.293 0-2.638-.059-2.638-2.47v-.956c0-1.121.168-2.637 2.13-2.8l5.277-.45z" transform="translate(-18.988 -18.217)"/><path d="m66.28 72.723a1.252 1.252 0 0 0 1.347 1.289h6.957a1.179 1.179 0 0 0 1.289-1.289v-5.669a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.347.562-1.347 1.46z" transform="translate(-15.161 -15.004)"/><path d="m51.286 61.983h9.203v29.793h-9.203z"/><path d="m36.6 110.076h9.2v-17.676c1.121-3.03 3.479-3.313 6.286-3.313 1.738 0 3.535 0 4.376.058v-8.806a8.35 8.35 0 0 0 -3.034-.339 9.929 9.929 0 0 0 -7.628 4.042l-1.236-3.758h-7.964z" transform="translate(-8.372 -18.3)"/><path d="m0 74.1h10.771v32.713h9.206v-32.713h11.051v-8.36h-31.028z" transform="translate(0 -15.038)"/><path d="m81.02 59.342a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.459h-6.957c-.9 0-1.348.561-1.348 1.459z" transform="translate(-18.533 -11.944)"/><path d="m66.289 46.459a1.252 1.252 0 0 0 1.347 1.29h6.958a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.958c-.9 0-1.347.562-1.347 1.46z" transform="translate(-15.163 -8.997)"/><path d="m80.939 33.537a1.252 1.252 0 0 0 1.348 1.29h6.957a1.179 1.179 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.957c-.9 0-1.348.562-1.348 1.459z" transform="translate(-18.514 -6.041)"/><path d="m95.678 46.459a1.252 1.252 0 0 0 1.348 1.29h6.958a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.285 1.285 0 0 0 -1.288-1.46h-6.958c-.9 0-1.348.562-1.348 1.46z" transform="translate(-21.886 -8.997)"/></g><path d="m110.508 33.595a1.253 1.253 0 0 0 1.349 1.29h6.957a1.179 1.179 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.349.562-1.349 1.46z" fill="#d0d600" transform="translate(-25.278 -6.054)"/><path d="m125.129 46.459a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.348.562-1.348 1.46z" fill="#d0d600" transform="translate(-28.623 -8.997)"/><path d="m139.839 33.595a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.286 1.286 0 0 0 -1.289-1.46h-6.959c-.9 0-1.347.562-1.347 1.46z" fill="#d0d600" transform="translate(-31.987 -6.054)"/><path d="m125.129 20.092a1.252 1.252 0 0 0 1.348 1.289h6.957a1.18 1.18 0 0 0 1.289-1.289v-5.669a1.285 1.285 0 0 0 -1.289-1.459h-6.957c-.9 0-1.348.561-1.348 1.459z" fill="#004cac" transform="translate(-28.623 -2.965)"/><path d="m139.839 7.229a1.253 1.253 0 0 0 1.347 1.29h6.959a1.181 1.181 0 0 0 1.289-1.29v-5.669a1.285 1.285 0 0 0 -1.289-1.46h-6.959c-.9 0-1.347.562-1.347 1.459z" fill="#004cac" transform="translate(-31.987 -.023)"/><path d="m154.594 20.171a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.289-1.29v-5.671a1.285 1.285 0 0 0 -1.289-1.459h-6.958c-.9 0-1.347.561-1.347 1.459z" fill="#d0d600" transform="translate(-35.363 -2.984)"/><path d="m184.087 20.092a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.29-1.29v-5.668a1.285 1.285 0 0 0 -1.29-1.459h-6.957a1.274 1.274 0 0 0 -1.348 1.459z" fill="#3dbee3" transform="translate(-42.109 -2.966)"/><path d="m198.8 7.168a1.253 1.253 0 0 0 1.349 1.29h6.951a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.284 1.284 0 0 0 -1.288-1.46h-6.957c-.9 0-1.349.562-1.349 1.46z" fill="#3dbee3" transform="translate(-45.474 -.009)"/><path d="m213.613 20.11a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.959c-.9 0-1.347.562-1.347 1.459z" fill="#84d2e5" transform="translate(-48.863 -2.97)"/><path d="m169.38 33.609a1.252 1.252 0 0 0 1.348 1.29h6.958a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.285 1.285 0 0 0 -1.288-1.46h-6.958c-.9 0-1.348.562-1.348 1.46z" fill="#3dbee3" transform="translate(-38.745 -6.057)"/><path d="m169.423 7.128a1.252 1.252 0 0 0 1.348 1.29h6.958a1.18 1.18 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.958c-.9 0-1.348.562-1.348 1.459z" fill="#d0d600" transform="translate(-38.755)"/><path d="m228.375 33.523a1.252 1.252 0 0 0 1.349 1.289h6.958a1.179 1.179 0 0 0 1.288-1.289v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.958a1.274 1.274 0 0 0 -1.349 1.459z" fill="#84d2e5" transform="translate(-52.24 -6.038)"/><path d="m383 84.92a4.68 4.68 0 1 1 -4.665-4.553 4.576 4.576 0 0 1 4.665 4.553m-8.19 0a3.528 3.528 0 0 0 3.554 3.637 3.487 3.487 0 0 0 3.471-3.609 3.515 3.515 0 1 0 -7.025-.028m2.8 2.388h-1.055v-4.554a9.233 9.233 0 0 1 1.749-.138 2.842 2.842 0 0 1 1.583.332 1.265 1.265 0 0 1 .443 1 1.166 1.166 0 0 1 -.93 1.052v.056a1.343 1.343 0 0 1 .833 1.111 3.5 3.5 0 0 0 .332 1.138h-1.138a3.9 3.9 0 0 1 -.361-1.111c-.083-.5-.361-.722-.944-.722h-.5zm.028-2.582h.5c.583 0 1.056-.194 1.056-.666 0-.416-.305-.694-.972-.694a2.472 2.472 0 0 0 -.583.056z" fill="#3dbee3" transform="translate(-85.47 -18.384)"/></svg></a>
+        <p>The unified platform for clinical trial disclosure, anonymization, and medical writing — built for the transparency requirements of a regulated world.</p>
+        <div class="foot-tag">AI Enabled. Human Driven.™</div>
+      </div>
+      <div class="foot-col">
+        <h5>Platform</h5>
+        <a href="#platform">REGISTRY</a>
+        <a href="#platform">ANONYMIZE</a>
+        <a href="#platform">LINK AI</a>
+        <a href="#platform">BEACON</a>
+        <a href="#">Trusano</a>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <a href="#why">Our mission</a>
+        <a href="#">Leadership</a>
+        <a href="#proof">Awards &amp; press</a>
+        <a href="#">Careers</a>
+        <a href="#">AIMWC Program</a>
+      </div>
+      <div class="foot-col">
+        <h5>Resources</h5>
+        <a href="#">White papers</a>
+        <a href="#">Blog</a>
+        <a href="#who">Government</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-offices">
+      <div><b>TrialAssure Global HQ</b>6880 Commerce Blvd.<br>Canton, MI 48187</div>
+      <div><b>TrialAssure B.V.</b>Flight Forum 40, Ground floor, Suite 31<br>5657 DB Eindhoven, The Netherlands</div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 TrialAssure. All rights reserved.</span>
+      <span style="display:flex;gap:20px"><a href="#">Privacy Policy</a><a href="#">Sitemap</a><a href="#">Security</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- nav scroll state + mobile menu ---------- */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 12) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+  }, {passive:true});
+  var menuBtn = document.getElementById('menuBtn'), mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function(){ mobileMenu.classList.toggle('open'); });
+  mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); }); });
+
+  /* ---------- reveal on scroll ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.14, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---------- ambient pixel fields ---------- */
+  function buildPixels(el, count, colors){
+    if(!el) return;
+    var frag = document.createDocumentFragment();
+    for(var i=0;i<count;i++){
+      var p = document.createElement('span');
+      p.className='px';
+      var s = 4 + Math.floor(Math.random()*4)*3;
+      p.style.width = s+'px'; p.style.height = s+'px';
+      p.style.left = Math.random()*100+'%';
+      p.style.top = Math.random()*100+'%';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.opacity = (0.12 + Math.random()*0.5).toFixed(2);
+      if(!reduce){
+        p.style.animation = 'pxFloat '+(7+Math.random()*9)+'s ease-in-out '+(Math.random()*5)+'s infinite';
+      }
+      frag.appendChild(p);
+    }
+    el.appendChild(frag);
+  }
+  var style = document.createElement('style');
+  style.textContent = '@keyframes pxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}';
+  document.head.appendChild(style);
+  buildPixels(document.getElementById('heroPixels'), 26, ['#1F5BEC','#22BEE8','#C7E70C','#1F5BEC']);
+  buildPixels(document.getElementById('platPixels'), 30, ['#22BEE8','#3a7bff','#C7E70C']);
+  buildPixels(document.getElementById('proofPixels'), 26, ['#22BEE8','#3a7bff']);
+  buildPixels(document.getElementById('ctaPixels'), 24, ['#22BEE8','#C7E70C','#3a7bff']);
+
+  /* ---------- hero headline reveal-word ---------- */
+  var bar = document.getElementById('revealBar');
+  function playWordReveal(){
+    if(!bar || reduce){ if(bar) bar.style.transform='scaleX(0)'; return; }
+    bar.style.transition='none'; bar.style.transform='scaleX(1)';
+    // force reflow
+    void bar.offsetWidth;
+    bar.style.transition='transform .9s cubic-bezier(.7,0,.2,1)';
+    bar.style.transformOrigin='right center';
+    bar.style.transform='scaleX(0)';
+  }
+  setTimeout(playWordReveal, 650);
+
+  /* ============================================================
+     REDACTION ENGINE  (shared by hero + demo)
+     ============================================================ */
+  // field types: 'direct' | 'quasi' | 'safe'
+  var RECORD = [
+    {label:'Subject name', type:'direct',
+      clear:'Margaret E. Hollis', anonymize:'SUBJ-04217', mask:'Dana R. Whitfield'},
+    {label:'Date of birth', type:'quasi',
+      clear:'14 Mar 1971', anonymize:'1970 – 1974', mask:'09 Aug 1969'},
+    {label:'Site / location', type:'quasi',
+      clear:'Mercy General, Sacramento CA', anonymize:'Region: US-West', mask:'Lakeside Clinical, Portland OR'},
+    {label:'Investigator', type:'direct',
+      clear:'Dr. Alan P. Reyes', anonymize:'INV-0883', mask:'Dr. Sara Lindqvist'},
+    {label:'Adverse event', type:'safe',
+      clear:'Grade 2 nausea, Day 14', anonymize:'Grade 2 nausea, Day 14', mask:'Grade 2 nausea, Day 14'},
+    {label:'Dose / arm', type:'safe',
+      clear:'200 mg BID — Arm B', anonymize:'200 mg BID — Arm B', mask:'200 mg BID — Arm B'}
+  ];
+
+  var MODES = {
+    clear:    {risk:92, util:100, tag:'Identifiable', tagClass:'clear',
+               explain:'Identifiable record. Every field is exposed — not shareable.'},
+    anonymize:{risk:4,  util:88,  tag:'Anonymized', tagClass:'safe',
+               explain:'Risk-based anonymization: identities generalized, the science intact.'},
+    redact:   {risk:2,  util:31,  tag:'Redacted', tagClass:'safe',
+               explain:'Redaction is safe — but it also blacks out usable data. Utility drops.'},
+    mask:     {risk:6,  util:95,  tag:'Masked', tagClass:'safe',
+               explain:'Masking swaps in realistic fictional values — usable and protected.'}
+  };
+
+  function pixBlock(width){
+    var n = Math.max(4, Math.round(width/9));
+    var cols = ['#0A1C30','#16314f','#0A1C30','#22324a'];
+    var html = '<span class="pix">';
+    for(var i=0;i<n;i++){ html += '<i style="background:'+cols[i%cols.length]+'"></i>'; }
+    html += '</span>';
+    return html;
+  }
+
+  function renderEngine(docEl, mode){
+    docEl.innerHTML = '';
+    RECORD.forEach(function(f){
+      var row = document.createElement('div'); row.className='doc-row';
+      var lab = document.createElement('div'); lab.className='doc-label'; lab.textContent = f.label;
+      var val = document.createElement('div'); val.className='doc-val';
+      if(f.type==='quasi') val.classList.add('is-quasi');
+      if(f.type==='safe') val.classList.add('is-safe');
+
+      if(mode==='clear' || f.type==='safe'){
+        var sp = document.createElement('span'); sp.className='v'; sp.textContent = f.clear;
+        val.appendChild(sp);
+      } else if(mode==='redact'){
+        var w = Math.min(190, Math.max(70, f.clear.length*7.2));
+        var bar = document.createElement('span'); bar.className='doc-bar'; bar.style.width = w+'px';
+        val.appendChild(bar);
+      } else if(mode==='mask'){
+        var sm = document.createElement('span'); sm.className='v'; sm.textContent = f.mask;
+        val.appendChild(sm);
+      } else { // anonymize
+        var sa = document.createElement('span'); sa.className='v'; sa.textContent = f.anonymize;
+        val.appendChild(sa);
+      }
+      row.appendChild(lab); row.appendChild(val);
+      docEl.appendChild(row);
+    });
+  }
+
+  function riskColor(v){ return v>=60 ? '#D6453B' : (v>=25 ? '#E0A93C' : '#1B8A4E'); }
+  function utilColor(v){ return v>=70 ? '#1F5BEC' : (v>=45 ? '#E0A93C' : '#D6453B'); }
+
+  function setMeters(prefix, mode){
+    var m = MODES[mode];
+    var riskVal = document.getElementById(prefix+'RiskVal');
+    var riskFill = document.getElementById(prefix+'RiskFill');
+    var utilVal = document.getElementById(prefix+'UtilVal');
+    var utilFill = document.getElementById(prefix+'UtilFill');
+    var tag = document.getElementById(prefix+'Tag');
+    if(riskVal){
+      riskVal.textContent = (mode==='clear'?'High · ':'Low · ')+m.risk+'%';
+      riskVal.style.color = riskColor(m.risk);
+      riskFill.style.width = m.risk+'%';
+      riskFill.style.background = riskColor(m.risk);
+    }
+    if(utilVal){
+      utilVal.textContent = m.util+'%';
+      utilVal.style.color = utilColor(m.util);
+      utilFill.style.width = m.util+'%';
+      utilFill.style.background = utilColor(m.util);
+    }
+    if(tag){
+      tag.textContent = m.tag;
+      tag.className = 'engine-tag '+m.tagClass;
+    }
+  }
+
+  /* ----- DEMO (interactive) ----- */
+  var demoDoc = document.getElementById('demoDoc');
+  var demoExplain = document.getElementById('demoExplain');
+  var demoMode = 'clear';
+  function setDemo(mode){
+    demoMode = mode;
+    renderEngine(demoDoc, mode);
+    setMeters('demo', mode);
+    if(demoExplain){
+      demoExplain.style.opacity = 0;
+      setTimeout(function(){
+        demoExplain.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>'+MODES[mode].explain;
+        demoExplain.style.opacity = 1;
+      }, 160);
+    }
+    document.querySelectorAll('.mode-btn').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-mode')===mode);
+    });
+  }
+  document.querySelectorAll('.mode-btn').forEach(function(b){
+    b.addEventListener('click', function(){ setDemo(b.getAttribute('data-mode')); });
+  });
+  setDemo('clear');
+
+  /* ----- HERO (ambient auto-cycle) ----- */
+  var heroDoc = document.getElementById('heroDoc');
+  var heroSeq = ['clear','anonymize','clear','mask'];
+  var heroIdx = 0;
+  function heroStep(){
+    var mode = heroSeq[heroIdx % heroSeq.length];
+    renderEngine(heroDoc, mode);
+    setMeters('hero', mode);
+    heroIdx++;
+  }
+  heroStep();
+  if(!reduce){
+    setInterval(heroStep, 2600);
+  }
+
+  /* ============================================================
+     PLATFORM SHOWCASE
+     ============================================================ */
+  var STAGES = [
+    { tag:'Step 01 · Register & disclose', name:'REGISTRY', sup:'®', kind:'registry',
+      desc:'A start-to-finish e-registration tool for creating, filing, and managing trial registrations and results disclosure worldwide — all from one record.',
+      feats:[
+        ['One record, every registry','file to ClinicalTrials.gov, EU CTIS, and 40+ national registries without re-keying.'],
+        ['AI protocol parsing','auto-populate submission fields straight from the protocol document.'],
+        ['Live compliance checks','catch missing or non-compliant fields before you submit, not after.']
+      ] },
+    { tag:'Step 02 · Protect & share', name:'ANONYMIZE', sup:'®', kind:'anonymize',
+      desc:'Risk-based anonymization, redaction, and masking for data, documents, and images — protect identities while keeping the science usable.',
+      feats:[
+        ['Risk-based, not blunt','quantify re-identification risk and apply the lightest transformation that meets the rule.'],
+        ['Patented + regulation-ready','a USPTO-granted date-offset method; EMA 0070, HC PRCI, and EU CTR ready.'],
+        ['Any format','documents, datasets, and images — Word, PDF, CSV, SAS, XPT.']
+      ] },
+    { tag:'Step 03 · Draft & write', name:'LINK AI', sup:'®', kind:'linkai',
+      desc:'A configurable medical writing AI — integrated with Microsoft Word — that drafts clinical, technical, and plain language documents across the lifecycle.',
+      feats:[
+        ['First drafts in a click','CSRs, Plain Language Summaries, protocols, and ICFs — drafted, then refined by your writers.'],
+        ['Weeks to hours','one top-10 sponsor received a Draft 1 CSR plus three-language summaries within 24 hours.'],
+        ['Plain language + translation','lay-term substitution, readability scoring, and built-in translation.']
+      ] },
+    { tag:'Step 04 · Track & prove', name:'BEACON', sup:'™', kind:'beacon',
+      desc:'A central dashboard tracking global transparency compliance across every requirement, deadline, and guideline — with a configurable rules engine.',
+      feats:[
+        ['Compliance at a glance','see what is on track, what is due soon, and what slipped — across the whole portfolio.'],
+        ['Your rules, configured','fold in your own workflows, timeframes, and internal benchmarks.'],
+        ['Connected, not exported','syncs with your CTMS and data systems via API.']
+      ] }
+  ];
+
+  function ck(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';}
+  function rfile(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/></svg>';}
+  function rrow(l,v){return '<div class="rrow"><span>'+l+'</span>'+v+'</div>';}
+  function rok(t){return '<span class="rok">'+ck()+t+'</span>';}
+  function rpend(t){return '<span class="rpend">&middot;&middot;&middot; '+t+'</span>';}
+  function rcard(id,state,body,tag){
+    return '<div class="rcard"><div class="rcard-head"><span class="rid">'+rfile()+id+'</span><span class="rstate cyan">'+state+'</span></div>'+
+      '<div class="rcard-body">'+body+(tag?'<span class="rtag">'+tag+'</span>':'')+'</div></div>';
+  }
+  function stageVisual(kind){
+    if(kind==='registry'){
+      return rcard('STUDY-2026-0427','Filed',
+        rrow('ClinicalTrials.gov',rok('Submitted'))+
+        rrow('EU CTIS',rok('Submitted'))+
+        rrow('ISRCTN &middot; UK',rpend('In review'))+
+        rrow('jRCT &middot; Japan',rpend('Queued')),
+        'AI auto-filled 47 registration fields');
+    }
+    if(kind==='anonymize'){
+      var meter='<div class="rmeter"><div class="rm-label"><span>Re-identification risk</span><span style="color:#5FD08C">Low &middot; 4%</span></div><div class="rm-track"><div class="rm-fill" style="width:4%;background:#5FD08C"></div></div></div>';
+      return rcard('subject-listing-0427','Anonymized',
+        rrow('Subject name','<span class="rval" style="color:var(--cyan)">SUBJ-04217</span>')+
+        rrow('Date of birth','<span class="rval" style="color:var(--cyan)">1970&ndash;1974</span>')+
+        rrow('Site','<span class="rbar"></span>')+
+        rrow('Adverse event','<span class="rval" style="color:#5FD08C">Grade 2 &mdash; Day 14</span>')+
+        meter,
+        'USPTO-patented date-offset method');
+    }
+    if(kind==='linkai'){
+      var langs='<div class="rlangs"><span class="rlang">'+ck()+'EN</span><span class="rlang">'+ck()+'FR</span><span class="rlang">'+ck()+'DE</span></div>';
+      return rcard('CSR &middot; Draft 1','Generated',
+        rrow('Methods',rok('Drafted'))+
+        rrow('Results',rok('Drafted'))+
+        rrow('Safety narrative',rok('Drafted'))+
+        rrow('Plain language summary',rok('Drafted'))+
+        langs,
+        'Draft 1 + 3 languages in 24 hours');
+    }
+    var dash='<div class="rdash"><div class="rd"><b>312</b><span>On track</span></div><div class="rd amber"><b>18</b><span>Due &le;30d</span></div><div class="rd amber"><b>4</b><span>Action</span></div></div>';
+    return rcard('Portfolio &middot; 334 studies','Live',
+      dash+
+      rrow('EU CTIS deadlines',rok('Met'))+
+      rrow('Results overdue',rpend('4 flagged'))+
+      rrow('Registry coverage','<span class="rval">40+ registries</span>'),
+      'Synced from your CTMS via API');
+  }
+
+  function renderStage(i){
+    var s = STAGES[i];
+    var feats = s.feats.map(function(f){
+      return '<li>'+ck()+'<span><b>'+f[0]+'</b> &mdash; '+f[1]+'</span></li>';
+    }).join('');
+    document.getElementById('stageDetail').innerHTML =
+      '<div class="fade-swap">'+
+        '<div class="sd-tag">'+s.tag+'</div>'+
+        '<div class="sd-name">'+s.name+'<sup>'+s.sup+'</sup></div>'+
+        '<p class="sd-desc">'+s.desc+'</p>'+
+        '<ul class="sd-feats">'+feats+'</ul>'+
+      '</div>'+
+      '<div class="sd-visual"><div class="fade-swap" style="width:100%;display:flex;justify-content:center">'+stageVisual(s.kind)+'</div></div>';
+  }
+
+  var pipeTrack = document.getElementById('pipeTrack');
+  var pipeFill = document.getElementById('pipeFill');
+  var pipeConnector = document.getElementById('pipeConnector');
+  var pipeNodes = pipeTrack ? Array.prototype.slice.call(pipeTrack.querySelectorAll('.pipe-node')) : [];
+  function positionPipe(i){
+    if(!pipeNodes[i] || !pipeFill) return;
+    if(window.innerWidth < 760){ pipeFill.style.width = '0'; return; }
+    var n = pipeNodes[i];
+    var center = n.offsetLeft + n.offsetWidth / 2;
+    pipeFill.style.width = center + 'px';
+    if(pipeConnector) pipeConnector.style.left = center + 'px';
+  }
+  var activeStage = 0;
+  function setStage(i){
+    activeStage = i;
+    pipeNodes.forEach(function(b,idx){
+      var on = idx === i;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    renderStage(i);
+    positionPipe(i);
+  }
+  pipeNodes.forEach(function(b,idx){ b.addEventListener('click', function(){ setStage(idx); }); });
+  if(pipeNodes.length){ setStage(0); }
+  window.addEventListener('load', function(){ positionPipe(activeStage); });
+  window.addEventListener('resize', function(){ positionPipe(activeStage); });
+  setTimeout(function(){ positionPipe(activeStage); }, 400);
+
+  /* ============================================================
+     COUNTERS
+     ============================================================ */
+  function animateCount(el){
+    var target = parseInt(el.getAttribute('data-count'),10);
+    var suffix = el.getAttribute('data-suffix')||'';
+    if(reduce){ el.textContent = target+suffix; return; }
+    var dur = 1400, start = null;
+    function tick(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts-start)/dur,1);
+      var eased = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(target*eased)+suffix;
+      if(p<1) requestAnimationFrame(tick); else el.textContent = target+suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ animateCount(e.target); cio.unobserve(e.target); }
+    });
+  }, {threshold:.5});
+  document.querySelectorAll('.pnum[data-count]').forEach(function(el){ cio.observe(el); });
+
+})();
+</script>
+</body>
+</html>

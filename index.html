@@ -264,7 +264,8 @@
   .pipe-dot{display:block;width:14px;height:14px;border-radius:50%;background:var(--ink-2);border:2px solid rgba(255,255,255,.28);margin-bottom:14px;transition:all .3s var(--ease)}
   .pipe-node.active .pipe-dot{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 0 5px rgba(34,190,232,.2)}
   .pipe-node .pnum{display:block;font-family:var(--font-mono);font-size:.62rem;color:var(--on-dark-soft);letter-spacing:.08em}
-  .pipe-node .pname{display:block;font-family:var(--font-display);font-weight:600;font-size:1.04rem;color:#fff;margin:4px 0 2px}
+  .pipe-node .pname{display:inline-block;background:#fff;border-radius:7px;padding:7px 10px;margin:8px 0 7px;line-height:0;box-shadow:0 3px 10px -2px rgba(0,0,0,.4)}
+  .node-logo{display:block;height:16px;width:auto}
   .pipe-node .pverb{display:block;font-size:.78rem;color:var(--on-dark-soft)}
   .pipe-connector{position:absolute;top:100%;left:0;width:0;height:24px;transition:left .55s var(--ease);z-index:3;pointer-events:none}
   .pipe-connector::before{content:"";position:absolute;left:-1px;top:0;width:2px;height:16px;background:var(--cyan);opacity:.55}
@@ -315,9 +316,6 @@
   /* ---- real product screenshots (platform panel) ---- */
   .shotwrap{position:relative;width:100%;max-width:430px;margin:0 auto}
   .shotframe{border-radius:13px;overflow:hidden;border:1px solid rgba(255,255,255,.16);background:#0d2138;box-shadow:0 28px 64px -30px rgba(0,0,0,.85),0 0 0 1px rgba(34,190,232,.16)}
-  .shot-bar{display:flex;align-items:center;gap:7px;padding:9px 13px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.08)}
-  .shot-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22)}
-  .shot-url{margin-left:9px;font-family:var(--font-mono);font-size:.64rem;color:var(--on-dark-soft);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .shotframe img{display:block;width:100%;height:auto}
   .shot-float{position:absolute;left:-34px;bottom:-26px;width:202px;max-width:52%;filter:drop-shadow(0 18px 34px rgba(0,0,0,.6));animation:fadeSwap .5s var(--ease)}
   .shot-float .rcard{max-width:none;background:rgba(8,22,38,.95);font-size:.64rem}
@@ -707,25 +705,25 @@
         <button class="pipe-node active" data-stage="0" role="tab" aria-selected="true">
           <span class="pipe-dot" aria-hidden="true"></span>
           <span class="pnum">STEP 01</span>
-          <span class="pname">REGISTRY</span>
+          <span class="pname"><img class="node-logo" src="assets/logos/registry.png" alt="TrialAssure REGISTRY"></span>
           <span class="pverb">Register &amp; disclose</span>
         </button>
         <button class="pipe-node" data-stage="1" role="tab" aria-selected="false">
           <span class="pipe-dot" aria-hidden="true"></span>
           <span class="pnum">STEP 02</span>
-          <span class="pname">ANONYMIZE</span>
+          <span class="pname"><img class="node-logo" src="assets/logos/anonymize.png" alt="TrialAssure ANONYMIZE"></span>
           <span class="pverb">Protect &amp; share</span>
         </button>
         <button class="pipe-node" data-stage="2" role="tab" aria-selected="false">
           <span class="pipe-dot" aria-hidden="true"></span>
           <span class="pnum">STEP 03</span>
-          <span class="pname">LINK AI</span>
+          <span class="pname"><img class="node-logo" src="assets/logos/linkai.png" alt="TrialAssure LINK AI"></span>
           <span class="pverb">Draft &amp; write</span>
         </button>
         <button class="pipe-node" data-stage="3" role="tab" aria-selected="false">
           <span class="pipe-dot" aria-hidden="true"></span>
           <span class="pnum">STEP 04</span>
-          <span class="pname">BEACON</span>
+          <span class="pname"><img class="node-logo" src="assets/logos/beacon.png" alt="TrialAssure BEACON"></span>
           <span class="pverb">Track &amp; prove</span>
         </button>
       </div>
@@ -1195,17 +1193,14 @@
       '<div class="rcard-body">'+body+(tag?'<span class="rtag">'+tag+'</span>':'')+'</div></div>';
   }
   var SHOTS = {
-    registry:{img:'assets/screenshots/registry.png',  url:'app.trialassure.com/registry',  alt:'TrialAssure REGISTRY — protocol registration and study identification screen'},
-    anonymize:{img:'assets/screenshots/anonymize.png', url:'app.trialassure.com/anonymize', alt:'TrialAssure ANONYMIZE — anonymized clinical document output'},
-    linkai:{img:'assets/screenshots/linkai.png',       url:'app.trialassure.com/link',      alt:'TrialAssure LINK AI — medical writing report editor'},
-    beacon:{img:'assets/screenshots/beacon.png',       url:'app.trialassure.com/beacon',    alt:'TrialAssure BEACON — transparency compliance tracker dashboard'}
+    registry:{img:'assets/screenshots/registry.png',  alt:'TrialAssure REGISTRY — protocol registration and study identification screen'},
+    anonymize:{img:'assets/screenshots/anonymize.png', alt:'TrialAssure ANONYMIZE — anonymized clinical document output'},
+    linkai:{img:'assets/screenshots/linkai.png',       alt:'TrialAssure LINK AI — medical writing report editor'},
+    beacon:{img:'assets/screenshots/beacon.png',       alt:'TrialAssure BEACON — transparency compliance tracker dashboard'}
   };
   function shotFrame(kind){
     var s = SHOTS[kind];
-    return '<div class="shotframe">'+
-      '<div class="shot-bar"><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-url">'+s.url+'</span></div>'+
-      '<img src="'+s.img+'" alt="'+s.alt+'" loading="lazy">'+
-    '</div>';
+    return '<div class="shotframe"><img src="'+s.img+'" alt="'+s.alt+'" loading="lazy"></div>';
   }
   function stageVisual(kind){
     if(kind==='registry'){

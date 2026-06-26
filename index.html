@@ -264,8 +264,8 @@
   .pipe-dot{display:block;width:14px;height:14px;border-radius:50%;background:var(--ink-2);border:2px solid rgba(255,255,255,.28);margin-bottom:14px;transition:all .3s var(--ease)}
   .pipe-node.active .pipe-dot{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 0 5px rgba(34,190,232,.2)}
   .pipe-node .pnum{display:block;font-family:var(--font-mono);font-size:.62rem;color:var(--on-dark-soft);letter-spacing:.08em}
-  .pipe-node .pname{display:inline-block;background:#fff;border-radius:7px;padding:7px 10px;margin:8px 0 7px;line-height:0;box-shadow:0 3px 10px -2px rgba(0,0,0,.4)}
-  .node-logo{display:block;height:16px;width:auto}
+  .pipe-node .pname{display:inline-block;background:#fff;border-radius:8px;padding:8px 12px;margin:9px 0 8px;line-height:0;box-shadow:0 3px 10px -2px rgba(0,0,0,.4)}
+  .node-logo{display:block;height:25px;width:auto}
   .pipe-node .pverb{display:block;font-size:.78rem;color:var(--on-dark-soft)}
   .pipe-connector{position:absolute;top:100%;left:0;width:0;height:24px;transition:left .55s var(--ease);z-index:3;pointer-events:none}
   .pipe-connector::before{content:"";position:absolute;left:-1px;top:0;width:2px;height:16px;background:var(--cyan);opacity:.55}
@@ -314,18 +314,9 @@
   .rd span{font-size:.54rem;color:var(--on-dark-soft);text-transform:uppercase;letter-spacing:.03em}
 
   /* ---- real product screenshots (platform panel) ---- */
-  .shotwrap{position:relative;width:100%;max-width:430px;margin:0 auto}
+  .shotwrap{position:relative;width:100%;max-width:520px;margin:0 auto}
   .shotframe{border-radius:13px;overflow:hidden;border:1px solid rgba(255,255,255,.16);background:#0d2138;box-shadow:0 28px 64px -30px rgba(0,0,0,.85),0 0 0 1px rgba(34,190,232,.16)}
   .shotframe img{display:block;width:100%;height:auto}
-  .shot-float{position:absolute;left:-34px;bottom:-26px;width:202px;max-width:52%;filter:drop-shadow(0 18px 34px rgba(0,0,0,.6));animation:fadeSwap .5s var(--ease)}
-  .shot-float .rcard{max-width:none;background:rgba(8,22,38,.95);font-size:.64rem}
-  .shot-float .rcard-body{padding:3px 12px 11px}
-  .shot-float .rmeter,.shot-float .rlangs,.shot-float .rdash{display:none}
-  @media (max-width:880px){
-    .shot-float{position:static;width:100%;max-width:344px;margin:18px auto 0;left:0}
-    .shot-float .rcard{font-size:.72rem}
-    .shot-float .rmeter,.shot-float .rlangs,.shot-float .rdash{display:block}
-  }
 
   /* ---- suite strip (hero-adjacent) ---- */
   .suitebar{padding:34px 0 6px}
@@ -334,7 +325,7 @@
   .suite-item:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--line-2)}
   .si-num{font-family:var(--font-mono);font-size:.6rem;color:var(--blue);letter-spacing:.1em}
   .si-name{font-family:var(--font-display);font-weight:600;font-size:1.16rem;color:var(--ink);letter-spacing:-.01em}
-  .si-logo{height:21px;width:auto;max-width:100%;display:block;margin:4px 0 3px;object-fit:contain}
+  .si-logo{height:34px;width:auto;max-width:100%;display:block;margin:6px 0 5px;object-fit:contain}
   .si-verb{font-size:.82rem;color:var(--slate)}
   .suite-arrow{display:flex;align-items:center;color:var(--line-2);font-size:1.1rem;font-weight:700}
   .suite-cap{text-align:center;margin-top:18px;font-size:.92rem;color:var(--slate)}
@@ -507,7 +498,7 @@
     <a class="logo" href="#top" aria-label="TrialAssure home"><svg class="ta-logo" viewBox="0 0 297.534 92.285" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TrialAssure logo"><path d="m352.563 103.3c-4.263 0-6.511.227-6.511-4.545h8.306c5.386 0 8.529-2.021 8.529-7.743 0-9.874-3.814-10.94-13.02-10.94-9.535 0-13.014 2.354-13.014 14.981 0 10.663 2.243 15.319 9.766 15.319 4.712 0 11.669.111 15.71-1.574v-6.114a47.064 47.064 0 0 1 -9.764.615m-2.135-16.553c2.976 0 3.259.786 3.259 3.759a1.878 1.878 0 0 1 -2.079 2.021h-5.556c-.112-5.443 1.013-5.78 4.376-5.78" fill="#3dbee3" transform="translate(-77.053 -18.317)"/><path d="m308.621 110.076h9.2v-17.676c1.121-3.03 3.478-3.313 6.286-3.313 1.737 0 3.532 0 4.375.058v-8.806a8.341 8.341 0 0 0 -3.03-.338 9.933 9.933 0 0 0 -7.632 4.041l-1.234-3.758h-7.969z" fill="#3dbee3" transform="translate(-70.595 -18.3)"/><path d="m268.027 99.838c0 5.949 1.459 10.83 8.752 10.83 4.544 0 6.115-1.853 8.865-3.537l1.684 3.029h7.523v-29.793h-9.206v20.817a6.969 6.969 0 0 1 -5.777 2.357c-1.627 0-2.639-.786-2.639-3.48v-19.694h-9.2z" fill="#3dbee3" transform="translate(-61.31 -18.384)"/><path d="m230.413 90.83c0 5.778 3.367 8.247 8.64 8.247h6.228c1.292 0 1.512.507 1.512 1.519v.895c0 1.293-.782 1.463-1.512 1.463h-13.632v5.554c2.075 1.8 10.38 1.851 17.058 1.851 3.591 0 7.293-1.907 7.293-8.026v-3.141c0-4.379-2.133-7.912-8.083-7.912h-6.45c-1.01 0-1.854 0-1.854-1.462v-.9c0-1.232.393-1.571 1.854-1.571h13.073v-5.608c-2.074-1.739-9.593-1.739-16.381-1.739-5.728 0-7.746 3.649-7.746 8.249z" fill="#3dbee3" transform="translate(-52.706 -18.3)"/><path d="m194.11 90.83c0 5.778 3.365 8.247 8.639 8.247h6.228c1.291 0 1.516.507 1.516 1.519v.895c0 1.293-.783 1.463-1.516 1.463h-13.633v5.554c2.078 1.8 10.381 1.851 17.058 1.851 3.591 0 7.294-1.907 7.294-8.026v-3.141c0-4.379-2.135-7.912-8.079-7.912h-6.455c-1.01 0-1.851 0-1.851-1.462v-.9c0-1.232.392-1.571 1.851-1.571h13.077v-5.608c-2.075-1.739-9.598-1.739-16.389-1.739-5.72 0-7.74 3.649-7.74 8.249z" fill="#3dbee3" transform="translate(-44.402 -18.3)"/><path d="m168.27 65.739h-10.66l-13.41 41.074h9.65l2.692-8.245h12.406l2.69 8.245h9.6zm-9.48 24.861 4.261-13.074 3.871 13.074z" fill="#3dbee3" transform="translate(-32.985 -15.037)"/><g fill="#004cac"><path d="m121.79 95.362c0 7.913 2.806 10.6 7.856 10.6h7.072v-5.5a28.207 28.207 0 0 1 -3.37-1.179c-1.344-.615-2.357-1.512-2.357-5.61v-31.642h-9.2z" transform="translate(-27.859 -14.189)"/><path d="m97.266 79.638c-5.554 0-9.315.45-13.244 2.075v5.556c1.347-.113 9.765-.619 11.84-.619 2.41 0 3.761.227 3.761 3.312a9.56 9.56 0 0 1 0 1.236c0 .053-7.407 0-7.407 0-7.013 0-9.206 4.153-9.206 8.414v2.582c0 3.537 2.472 7.91 8.814 8.138 4.317.111 7.4-2.638 7.8-3.478l1.908 3.139h7.293v-20.425c0-7.855-4.489-9.93-11.558-9.93m2.357 21.489a6.985 6.985 0 0 1 -4.769 2.135c-1.293 0-2.638-.059-2.638-2.47v-.956c0-1.121.168-2.637 2.13-2.8l5.277-.45z" transform="translate(-18.988 -18.217)"/><path d="m66.28 72.723a1.252 1.252 0 0 0 1.347 1.289h6.957a1.179 1.179 0 0 0 1.289-1.289v-5.669a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.347.562-1.347 1.46z" transform="translate(-15.161 -15.004)"/><path d="m51.286 61.983h9.203v29.793h-9.203z"/><path d="m36.6 110.076h9.2v-17.676c1.121-3.03 3.479-3.313 6.286-3.313 1.738 0 3.535 0 4.376.058v-8.806a8.35 8.35 0 0 0 -3.034-.339 9.929 9.929 0 0 0 -7.628 4.042l-1.236-3.758h-7.964z" transform="translate(-8.372 -18.3)"/><path d="m0 74.1h10.771v32.713h9.206v-32.713h11.051v-8.36h-31.028z" transform="translate(0 -15.038)"/><path d="m81.02 59.342a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.459h-6.957c-.9 0-1.348.561-1.348 1.459z" transform="translate(-18.533 -11.944)"/><path d="m66.289 46.459a1.252 1.252 0 0 0 1.347 1.29h6.958a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.958c-.9 0-1.347.562-1.347 1.46z" transform="translate(-15.163 -8.997)"/><path d="m80.939 33.537a1.252 1.252 0 0 0 1.348 1.29h6.957a1.179 1.179 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.957c-.9 0-1.348.562-1.348 1.459z" transform="translate(-18.514 -6.041)"/><path d="m95.678 46.459a1.252 1.252 0 0 0 1.348 1.29h6.958a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.285 1.285 0 0 0 -1.288-1.46h-6.958c-.9 0-1.348.562-1.348 1.46z" transform="translate(-21.886 -8.997)"/></g><path d="m110.508 33.595a1.253 1.253 0 0 0 1.349 1.29h6.957a1.179 1.179 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.349.562-1.349 1.46z" fill="#d0d600" transform="translate(-25.278 -6.054)"/><path d="m125.129 46.459a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.285 1.285 0 0 0 -1.289-1.46h-6.957c-.9 0-1.348.562-1.348 1.46z" fill="#d0d600" transform="translate(-28.623 -8.997)"/><path d="m139.839 33.595a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.289-1.29v-5.668a1.286 1.286 0 0 0 -1.289-1.46h-6.959c-.9 0-1.347.562-1.347 1.46z" fill="#d0d600" transform="translate(-31.987 -6.054)"/><path d="m125.129 20.092a1.252 1.252 0 0 0 1.348 1.289h6.957a1.18 1.18 0 0 0 1.289-1.289v-5.669a1.285 1.285 0 0 0 -1.289-1.459h-6.957c-.9 0-1.348.561-1.348 1.459z" fill="#004cac" transform="translate(-28.623 -2.965)"/><path d="m139.839 7.229a1.253 1.253 0 0 0 1.347 1.29h6.959a1.181 1.181 0 0 0 1.289-1.29v-5.669a1.285 1.285 0 0 0 -1.289-1.46h-6.959c-.9 0-1.347.562-1.347 1.459z" fill="#004cac" transform="translate(-31.987 -.023)"/><path d="m154.594 20.171a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.289-1.29v-5.671a1.285 1.285 0 0 0 -1.289-1.459h-6.958c-.9 0-1.347.561-1.347 1.459z" fill="#d0d600" transform="translate(-35.363 -2.984)"/><path d="m184.087 20.092a1.252 1.252 0 0 0 1.348 1.29h6.957a1.18 1.18 0 0 0 1.29-1.29v-5.668a1.285 1.285 0 0 0 -1.29-1.459h-6.957a1.274 1.274 0 0 0 -1.348 1.459z" fill="#3dbee3" transform="translate(-42.109 -2.966)"/><path d="m198.8 7.168a1.253 1.253 0 0 0 1.349 1.29h6.951a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.284 1.284 0 0 0 -1.288-1.46h-6.957c-.9 0-1.349.562-1.349 1.46z" fill="#3dbee3" transform="translate(-45.474 -.009)"/><path d="m213.613 20.11a1.252 1.252 0 0 0 1.347 1.29h6.959a1.18 1.18 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.959c-.9 0-1.347.562-1.347 1.459z" fill="#84d2e5" transform="translate(-48.863 -2.97)"/><path d="m169.38 33.609a1.252 1.252 0 0 0 1.348 1.29h6.958a1.179 1.179 0 0 0 1.288-1.29v-5.668a1.285 1.285 0 0 0 -1.288-1.46h-6.958c-.9 0-1.348.562-1.348 1.46z" fill="#3dbee3" transform="translate(-38.745 -6.057)"/><path d="m169.423 7.128a1.252 1.252 0 0 0 1.348 1.29h6.958a1.18 1.18 0 0 0 1.288-1.29v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.958c-.9 0-1.348.562-1.348 1.459z" fill="#d0d600" transform="translate(-38.755)"/><path d="m228.375 33.523a1.252 1.252 0 0 0 1.349 1.289h6.958a1.179 1.179 0 0 0 1.288-1.289v-5.669a1.284 1.284 0 0 0 -1.288-1.459h-6.958a1.274 1.274 0 0 0 -1.349 1.459z" fill="#84d2e5" transform="translate(-52.24 -6.038)"/><path d="m383 84.92a4.68 4.68 0 1 1 -4.665-4.553 4.576 4.576 0 0 1 4.665 4.553m-8.19 0a3.528 3.528 0 0 0 3.554 3.637 3.487 3.487 0 0 0 3.471-3.609 3.515 3.515 0 1 0 -7.025-.028m2.8 2.388h-1.055v-4.554a9.233 9.233 0 0 1 1.749-.138 2.842 2.842 0 0 1 1.583.332 1.265 1.265 0 0 1 .443 1 1.166 1.166 0 0 1 -.93 1.052v.056a1.343 1.343 0 0 1 .833 1.111 3.5 3.5 0 0 0 .332 1.138h-1.138a3.9 3.9 0 0 1 -.361-1.111c-.083-.5-.361-.722-.944-.722h-.5zm.028-2.582h.5c.583 0 1.056-.194 1.056-.666 0-.416-.305-.694-.972-.694a2.472 2.472 0 0 0 -.583.056z" fill="#3dbee3" transform="translate(-85.47 -18.384)"/></svg></a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#platform">Platform</a>
-      <a href="#demo">Live demo</a>
+      <a href="#demo">Interactive demo</a>
       <a href="#why">Why TrialAssure</a>
       <a href="#who">Who it's for</a>
       <a href="#proof">Proof</a>
@@ -741,8 +732,8 @@
         <span class="eyebrow">See it work</span>
         <h2 class="h2" style="margin-top:.5rem">Watch a record become shareable.</h2>
         <p class="lead" style="margin-top:1.1rem">
-          This is a live preview of the engine inside ANONYMIZE. Switch modes and watch the
-          identifiers transform — while the clinical findings stay exactly where they are.
+          This is an interactive preview of how the engine inside ANONYMIZE works. Switch modes
+          and watch the identifiers transform — while the clinical findings stay exactly where they are.
         </p>
         <div class="demo-modes" role="group" aria-label="Anonymization mode">
           <button class="mode-btn active" data-mode="clear">Identifiable</button>
@@ -1253,7 +1244,7 @@
         '<ul class="sd-feats">'+feats+'</ul>'+
       '</div>'+
       '<div class="sd-visual"><div class="fade-swap" style="width:100%;display:flex;justify-content:center">'+
-        '<div class="shotwrap">'+shotFrame(s.kind)+'<div class="shot-float">'+stageVisual(s.kind)+'</div></div>'+
+        '<div class="shotwrap">'+shotFrame(s.kind)+'</div>'+
       '</div></div>';
   }
 
